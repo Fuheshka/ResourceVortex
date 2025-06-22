@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TrashProjectile : MonoBehaviour
 {
-    public int damage = 0;
+    public int damage = 1;
     public int scorePerKill = 10;
 
     void OnCollisionEnter(Collision collision)
@@ -22,8 +22,8 @@ public class TrashProjectile : MonoBehaviour
         }
         else
         {
-            // Optionally destroy projectile on any collision
-            Destroy(gameObject, 2f); // Destroy after 2 seconds if hits non-enemy
+            // Destroy projectile immediately on any collision to prevent bouncing
+            Destroy(gameObject);
         }
     }
 }
