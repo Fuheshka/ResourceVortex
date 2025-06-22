@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class EnemyController : MonoBehaviour
     [Header("Health Settings")]
     public int maxHealth = 100;
     private int currentHealth;
+    public Slider healthBarSlider; // Ссылка на Slider
 
     private Transform target;
     private Rigidbody rb;
@@ -25,6 +27,11 @@ public class EnemyController : MonoBehaviour
         // Поиск цели (игрока)
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null) target = player.transform;
+        if (healthBarSlider == null)
+        {
+            healthBarSlider = GetComponentInChildren<Slider>();
+        }
+        UpdateHealthBar(); // Обновляем полоску при старте
     }
 
     void Update()
@@ -79,7 +86,7 @@ public class EnemyController : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        Debug.Log(gameObject.name + " получил " + damage + " урона. Осталось HP: " + currentHealth);
+        UpdateHealthBar();
 
         if (currentHealth <= 0)
         {
@@ -87,10 +94,17 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    void UpdateHealthBar()
+    {
+        if (healthBarSlider != null)
+        {
+            healthBarSlider.value = (float)currentHealth / maxHealth; // Нормализуем от 0 до 1
+        }
+    }
+
     // Смерть врага
     void Die()
     {
-        Debug.Log(gameObject.name + " умер!");
         Destroy(gameObject); // Или анимация смерти + отключение коллайдера
     }
 }
