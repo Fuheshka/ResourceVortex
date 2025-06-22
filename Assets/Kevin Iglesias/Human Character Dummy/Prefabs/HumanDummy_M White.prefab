@@ -437,6 +437,14 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: d9cd8eb4a074cd84ab2686c58bcf21d9, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b41e3dd688770c54c8a1a0f808a46abc, type: 2}
+    - target: {fileID: 5866666021909216657, guid: d9cd8eb4a074cd84ab2686c58bcf21d9, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -501,7 +509,7 @@ MonoBehaviour:
   moveSpeed: 2
   stoppingDistance: 1
   rotationSpeed: 5
-  groundCheckDistance: 0.2
+  groundCheckDistance: 1.2
   maxHealth: 3
   healthBarSlider: {fileID: 6199482201343208305}
 --- !u!4 &4311652260893728935 stripped
