@@ -844,7 +844,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &958630332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -859,8 +859,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trashPrefabs:
   - {fileID: 5196029490121826811, guid: eee8c75e18c877b4eb4f121f47990e2e, type: 3}
-  spawnInterval: 1
-  spawnRadius: 10
+  - {fileID: 8147751248407261628, guid: 7e0c03c3f02415948b06ba77c5780ca9, type: 3}
+  - {fileID: 6081335912669057808, guid: 5a7c82a04dcccb94899a1a9df294700c, type: 3}
+  spawnInterval: 0.4
+  spawnRadius: 20
 --- !u!4 &958630333
 Transform:
   m_ObjectHideFlags: 0
