@@ -21,7 +21,18 @@ public class EnemySpawner : MonoBehaviour
     void SpawnEnemy()
     {
         Vector3 spawnPosition = transform.position + Random.insideUnitSphere * spawnRadius;
-        spawnPosition.y = 16f; // Assuming ground level is y=0
+
+        // Raycast down to find ground height
+        RaycastHit hit;
+        if (Physics.Raycast(spawnPosition + Vector3.up * 50f, Vector3.down, out hit, 100f))
+        {
+            spawnPosition.y = hit.point.y;
+        }
+        else
+        {
+            spawnPosition.y = 0f; // fallback ground level
+        }
+
         Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
     }
 }
