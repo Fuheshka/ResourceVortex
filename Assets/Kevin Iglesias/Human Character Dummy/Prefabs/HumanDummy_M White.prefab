@@ -443,7 +443,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: b41e3dd688770c54c8a1a0f808a46abc, type: 2}
     - target: {fileID: 5866666021909216657, guid: d9cd8eb4a074cd84ab2686c58bcf21d9, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -506,10 +506,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b788841274527b046b2d6d1ac1997c9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
+  moveSpeed: 3
   stoppingDistance: 1
   rotationSpeed: 5
-  groundCheckDistance: 1.2
+  groundCheckDistance: 0.2
   maxHealth: 3
   healthBarSlider: {fileID: 6199482201343208305}
 --- !u!4 &4311652260893728935 stripped
