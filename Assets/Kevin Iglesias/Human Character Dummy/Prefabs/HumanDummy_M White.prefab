@@ -118,12 +118,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b788841274527b046b2d6d1ac1997c9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  targetTag: Player
   moveSpeed: 2
   stoppingDistance: 1
   rotationSpeed: 5
   groundCheckDistance: 0.2
+  maxHealth: 3
 --- !u!1 &5190437239892832003 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8382477316637108303, guid: d9cd8eb4a074cd84ab2686c58bcf21d9, type: 3}
