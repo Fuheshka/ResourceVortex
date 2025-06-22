@@ -536,7 +536,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwOrigin: {fileID: 849095247}
   throwForce: 10
-  trashPrefab: {fileID: 4140774597986965270, guid: d53b50d26ff849c48ad4560456c162cf, type: 3}
+  trashPrefab: {fileID: 2852126211788403554, guid: 040b24491e4b2154b8caed6d274988ae, type: 3}
+  playerCamera: {fileID: 1022845349}
+  maxThrowDistance: 50
 --- !u!4 &554365451 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4459864850019384738, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
@@ -647,7 +649,7 @@ Transform:
   m_GameObject: {fileID: 849095246}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.2}
+  m_LocalPosition: {x: 0, y: 0.62, z: 0.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -750,6 +752,11 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!20 &1022845349 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 4459864851310106426, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+  m_PrefabInstance: {fileID: 406622747}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1453947907
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,8 +3,10 @@ using UnityEngine;
 public class PlayerThrow : MonoBehaviour
 {
     public Transform throwOrigin;
-    public float throwForce = 10f;
+    public float throwForce = 50f; // Increased force for bullet-like speed
     public GameObject trashPrefab;
+    public Camera playerCamera;
+    public float maxThrowDistance = 100f;
 
     void Update()
     {
@@ -16,22 +18,37 @@ public class PlayerThrow : MonoBehaviour
 
     void ThrowTrash()
     {
-        if (trashPrefab == null) return;
-
-        Debug.Log("ThrowOrigin position: " + throwOrigin.position + ", forward: " + throwOrigin.forward);
-        Debug.Log("Player forward: " + transform.forward);
-
-        GameObject thrownTrash = Instantiate(trashPrefab, throwOrigin.position, Quaternion.identity);
-        Rigidbody rb = thrownTrash.GetComponent<Rigidbody>();
-        if (rb != null)
+        if (trashPrefab == null || throwOrigin == null || playerCamera == null)
         {
-            if (rb.isKinematic)
-            {
-                rb.isKinematic = false;
-            }
-            // Use player's forward direction for throwing
-            rb.linearVelocity = transform.forward * throwForce;
-            Debug.Log("Throwing trash with player forward direction: " + transform.forward + " and force: " + throwForce);
+            Debug.LogWarning("TrashPrefab, ThrowOrigin, or PlayerCamera is not assigned.");
+            return;
         }
+
+        Vector3 throwDirection = playerCamera.transform.forward;
+        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, maxThrowDistance))
+        {
+            throwDirection = (hit.point - throwOrigin.position).normalized;
+        }
+
+        GameObject thrownTrash = Instantiate(trashPrefab, throwOrigin.position, Quaternion.LookRotation(throwDirection));
+        Rigidbody rb = thrownTrash.GetComponent<Rigidbody>();
+
+        if (rb == null)
+        {
+            Debug.LogWarning("Thrown trash prefab does not have a Rigidbody component.");
+            return;
+        }
+
+        rb.isKinematic = false;
+        rb.linearVelocity = throwDirection * throwForce;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        rb.linearDamping = 0f;
+        rb.angularDamping = 0f;
+        rb.useGravity = true;
+
+        Debug.Log($"Thrown trash with velocity {rb.linearVelocity}");
     }
 }
