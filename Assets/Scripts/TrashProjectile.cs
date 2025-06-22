@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TrashProjectile : MonoBehaviour
 {
-    public int damage = 1;
+    public int damage = 0;
     public int scorePerKill = 10;
 
     void OnCollisionEnter(Collision collision)
@@ -16,7 +16,7 @@ public class TrashProjectile : MonoBehaviour
             //     enemyHealth.TakeDamage(damage);
             // }
 
-            ScoreManager.Instance.AddScore(scorePerKill);
+            //ScoreManager.Instance.AddScore(scorePerKill);
 
             Destroy(gameObject);
         }

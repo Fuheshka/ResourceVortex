@@ -10,7 +10,7 @@ public class EnemyController : MonoBehaviour
     public float groundCheckDistance = 0.2f;
 
     [Header("Health Settings")]
-    public int maxHealth = 100;
+    public int maxHealth = 3;
     private int currentHealth;
     public Slider healthBarSlider; // Ссылка на Slider
 
@@ -77,7 +77,7 @@ public class EnemyController : MonoBehaviour
             if (projectile != null)
             {
                 TakeDamage(projectile.damage);
-                Destroy(collision.gameObject); // Уничтожаем пулю
+                //Destroy(collision.gameObject); // Уничтожаем пулю
             }
         }
     }
@@ -90,6 +90,7 @@ public class EnemyController : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            //ScoreManager.Instance.AddScore(10); // Добавит 10 очков
             Die();
         }
     }

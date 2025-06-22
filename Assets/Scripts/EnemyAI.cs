@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class EnemyAI : MonoBehaviour
 {
     [Header("Health Settings")]
-    public int maxHealth = 100;
+    public int maxHealth = 3;
     private int currentHealth;
     public Slider healthBarSlider;
 
@@ -84,6 +84,7 @@ public class EnemyAI : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            ScoreManager.Instance.AddScore(10); // Добавит 10 очков
             Die();
         }
     }
