@@ -234,8 +234,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -2, y: 0}
-  m_SizeDelta: {x: 6, y: 0}
+  m_AnchoredPosition: {x: 5, y: 0}
+  m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8192092543827406466
 CanvasRenderer:
@@ -511,8 +511,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 3
   healthBarSlider: {fileID: 6199482201343208305}
-  attackRange: 2
-  attackCooldown: 1.5
+  attackRange: 1
+  attackCooldown: 1
   attackDamage: 10
   scoreValue: 10
 --- !u!195 &-1834000624686816765
