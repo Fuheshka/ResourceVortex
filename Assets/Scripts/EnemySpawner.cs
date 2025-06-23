@@ -1,28 +1,58 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemyPrefab;
-    public float spawnInterval = 3f;
-    public float spawnRadius = 10f;
+    public float spawnRadius = 10f; // Радиус спавна
+    private Queue<SpawnTask> spawnQueue = new Queue<SpawnTask>(); // Очередь задач спавна
+    private bool isSpawning = false;
 
-    private float timer;
-
-    void Update()
+    private class SpawnTask
     {
-        timer += Time.deltaTime;
-        if (timer >= spawnInterval)
+        public GameObject enemyPrefab;
+        public int count;
+        public float spawnInterval;
+
+        public SpawnTask(GameObject prefab, int count, float interval)
         {
-            SpawnEnemy();
-            timer = 0f;
+            this.enemyPrefab = prefab;
+            this.count = count;
+            this.spawnInterval = interval;
         }
     }
 
-    void SpawnEnemy()
+    public void QueueEnemies(GameObject enemyPrefab, int count, float spawnInterval)
+    {
+        spawnQueue.Enqueue(new SpawnTask(enemyPrefab, count, spawnInterval));
+        if (!isSpawning)
+        {
+            StartCoroutine(SpawnEnemies());
+        }
+    }
+
+    IEnumerator SpawnEnemies()
+    {
+        isSpawning = true;
+
+        while (spawnQueue.Count > 0)
+        {
+            SpawnTask task = spawnQueue.Dequeue();
+            for (int i = 0; i < task.count; i++)
+            {
+                SpawnEnemy(task.enemyPrefab);
+                yield return new WaitForSeconds(task.spawnInterval);
+            }
+        }
+
+        isSpawning = false;
+    }
+
+    void SpawnEnemy(GameObject enemyPrefab)
     {
         Vector3 spawnPosition = transform.position + Random.insideUnitSphere * spawnRadius;
 
-        // Raycast down to find ground height
+        // Raycast вниз для поиска поверхности
         RaycastHit hit;
         if (Physics.Raycast(spawnPosition + Vector3.up * 50f, Vector3.down, out hit, 100f))
         {
@@ -30,15 +60,20 @@ public class EnemySpawner : MonoBehaviour
         }
         else
         {
-            spawnPosition.y = 0f; // fallback ground level
+            spawnPosition.y = 0f; // Резервная высота
         }
 
         Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
-        // Play enemy spawn sound
+        // Проигрываем звук спавна
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX(AudioManager.Instance.enemySpawnClip);
         }
+    }
+
+    public bool IsSpawning()
+    {
+        return isSpawning;
     }
 }
