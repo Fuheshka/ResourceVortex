@@ -921,7 +921,7 @@ Transform:
   m_GameObject: {fileID: 742372069}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 413.8, y: 14.07, z: 686.7}
+  m_LocalPosition: {x: 413.8, y: 28.2, z: 628.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1392,7 +1392,7 @@ Transform:
   m_GameObject: {fileID: 1453947907}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 413.8, y: 14.07, z: 340}
+  m_LocalPosition: {x: 413.8, y: 21.5, z: 425.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1692,10 +1692,10 @@ MonoBehaviour:
   waves:
   - waveName: First
     enemies:
-    - enemyPrefab: {fileID: 990903540611260484, guid: 8e1471e805192fd4e902f7cc7eec8378, type: 3}
+    - enemyPrefab: {fileID: 3503167532966410781, guid: 9bd72731ebe2248478ba4849c274a43b, type: 3}
       count: 10
     spawnInterval: 1
-    delayBeforeWave: 3
+    delayBeforeWave: 10
   - waveName: Second
     enemies:
     - enemyPrefab: {fileID: 3503167532966410781, guid: 9bd72731ebe2248478ba4849c274a43b, type: 3}
@@ -1703,7 +1703,7 @@ MonoBehaviour:
     - enemyPrefab: {fileID: 7859065247133598471, guid: 75f582752a9a5774dbabd596a75f7bd0, type: 3}
       count: 5
     spawnInterval: 1
-    delayBeforeWave: 60
+    delayBeforeWave: 50
   spawners:
   - {fileID: 1453947908}
   - {fileID: 742372070}
