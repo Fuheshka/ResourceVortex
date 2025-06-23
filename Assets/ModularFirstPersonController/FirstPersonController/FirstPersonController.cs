@@ -1,4 +1,4 @@
-﻿// CHANGE LOG
+﻿﻿// CHANGE LOG
 // 
 // CHANGES || version VERSION
 //
@@ -61,6 +61,9 @@ public class FirstPersonController : MonoBehaviour
 
     // Internal Variables
     private bool isWalking = false;
+
+    private float walkTimer = 0f;
+    private float walkInterval = 0.5f; // default interval between steps, will be adjusted by speed
 
     #region Sprint
 
@@ -380,8 +383,17 @@ public class FirstPersonController : MonoBehaviour
                 if (!isWalking)
                 {
                     isWalking = true;
+                    walkTimer = 0f; // reset timer when start walking
+                }
 
-                    // Play walk sound
+                // Calculate interval based on speed (faster speed = shorter interval)
+                float speed = targetVelocity.magnitude;
+                walkInterval = Mathf.Clamp(0.6f / speed, 0.2f, 0.6f);
+
+                walkTimer += Time.deltaTime;
+                if (walkTimer >= walkInterval)
+                {
+                    walkTimer = 0f;
                     if (AudioManager.Instance != null)
                     {
                         AudioManager.Instance.PlaySFX(AudioManager.Instance.walkClip);
@@ -390,7 +402,11 @@ public class FirstPersonController : MonoBehaviour
             }
             else
             {
-                isWalking = false;
+                if (isWalking)
+                {
+                    isWalking = false;
+                    walkTimer = 0f;
+                }
             }
 
             // All movement calculations shile sprint is active

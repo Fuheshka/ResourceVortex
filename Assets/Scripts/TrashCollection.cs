@@ -146,9 +146,10 @@ public class TrashCollection : MonoBehaviour
             UpdateCounterText();
 
             // Play trash recycle sound
-            if (AudioManager.Instance != null)
+            if (AudioManager.Instance != null && AudioManager.Instance.trashRecycleClips.Length > 0)
             {
-                AudioManager.Instance.PlaySFX(AudioManager.Instance.trashRecycleClip);
+                int index = Random.Range(0, AudioManager.Instance.trashRecycleClips.Length);
+                AudioManager.Instance.PlayRecycleSFX(AudioManager.Instance.trashRecycleClips[index]);
             }
 
             yield return new WaitForSeconds(compressionDelay); // �������� ����� ��������

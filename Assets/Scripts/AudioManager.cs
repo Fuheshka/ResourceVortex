@@ -8,6 +8,9 @@ public class AudioManager : MonoBehaviour
     public AudioSource sfxSource;
     public AudioSource musicSource;
 
+    public AudioSource recycleSfxSource; // New AudioSource for recycle sound
+    public AudioSource walkSfxSource; // New AudioSource for walk sound loop
+
     [Header("Player Audio Clips")]
     public AudioClip playerThrowClip;
     public AudioClip jumpClip;
@@ -20,7 +23,7 @@ public class AudioManager : MonoBehaviour
 
     [Header("Gameplay Audio Clips")]
     public AudioClip scoreClip;
-    public AudioClip trashRecycleClip;
+    public AudioClip[] trashRecycleClips; // Changed to array for random recycle sounds
     public AudioClip upgradePurchaseClip;
 
     [Header("UI Audio Clips")]
@@ -50,6 +53,39 @@ public class AudioManager : MonoBehaviour
         if (clip != null && sfxSource != null)
         {
             sfxSource.PlayOneShot(clip);
+        }
+    }
+
+    // New method to play recycle sound, interrupting previous recycle sound if playing
+    public void PlayRecycleSFX(AudioClip clip)
+    {
+        if (clip != null && recycleSfxSource != null)
+        {
+            if (recycleSfxSource.isPlaying)
+            {
+                recycleSfxSource.Stop();
+            }
+            recycleSfxSource.clip = clip;
+            recycleSfxSource.Play();
+        }
+    }
+
+    // New methods to control walk sound loop
+    public void StartWalkSFX()
+    {
+        if (walkClip != null && walkSfxSource != null && !walkSfxSource.isPlaying)
+        {
+            walkSfxSource.clip = walkClip;
+            walkSfxSource.loop = true;
+            walkSfxSource.Play();
+        }
+    }
+
+    public void StopWalkSFX()
+    {
+        if (walkSfxSource != null && walkSfxSource.isPlaying)
+        {
+            walkSfxSource.Stop();
         }
     }
 
