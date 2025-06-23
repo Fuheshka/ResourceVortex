@@ -23,7 +23,7 @@ public class TrashSpawner : MonoBehaviour
         if (trashPrefabs.Length == 0) return;
 
         Vector3 spawnPosition = transform.position + Random.insideUnitSphere * spawnRadius;
-        spawnPosition.y = 16f; // Adjust to ground level for trash
+        spawnPosition.y = transform.position.y; // Adjust to ground level for trash
 
         int index = Random.Range(0, trashPrefabs.Length);
         Instantiate(trashPrefabs[index], spawnPosition, Quaternion.identity);
