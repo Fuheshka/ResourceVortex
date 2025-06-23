@@ -7,6 +7,20 @@ public class PlayerThrow : MonoBehaviour
     public GameObject trashPrefab;
     public Camera playerCamera;
     public float maxThrowDistance = 100f;
+    public TrashCollection trashCollection; // Ссылка на TrashCollection для доступа к bulletCount
+
+    void Start()
+    {
+        // Проверка наличия TrashCollection
+        if (trashCollection == null)
+        {
+            trashCollection = GetComponent<TrashCollection>();
+            if (trashCollection == null)
+            {
+                Debug.LogWarning("TrashCollection script not found on this GameObject.");
+            }
+        }
+    }
 
     void Update()
     {
@@ -18,6 +32,13 @@ public class PlayerThrow : MonoBehaviour
 
     void ThrowTrash()
     {
+        // Проверка наличия пуль
+        if (trashCollection == null || trashCollection.bulletCount <= 0)
+        {
+            Debug.LogWarning("Cannot throw: No bullets available or TrashCollection not assigned.");
+            return;
+        }
+
         if (trashPrefab == null || throwOrigin == null || playerCamera == null)
         {
             Debug.LogWarning("TrashPrefab, ThrowOrigin, or PlayerCamera is not assigned.");
@@ -39,8 +60,13 @@ public class PlayerThrow : MonoBehaviour
         if (rb == null)
         {
             Debug.LogWarning("Thrown trash prefab does not have a Rigidbody component.");
+            Destroy(thrownTrash); // Уничтожаем объект, если нет Rigidbody
             return;
         }
+
+        // Уменьшаем количество пуль
+        trashCollection.bulletCount--;
+        trashCollection.UpdateCounterText(); // Обновляем UI счетчик
 
         rb.isKinematic = false;
         rb.linearVelocity = throwDirection * throwForce;
@@ -49,6 +75,6 @@ public class PlayerThrow : MonoBehaviour
         rb.angularDamping = 0f;
         rb.useGravity = true;
 
-        Debug.Log($"Thrown trash with velocity {rb.linearVelocity}");
+        Debug.Log($"Thrown trash with velocity {rb.linearVelocity}. Bullets remaining: {trashCollection.bulletCount}");
     }
 }

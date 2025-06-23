@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2364499120508601244}
   - component: {fileID: 8825575976296002130}
   - component: {fileID: 5789646092897632977}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: hanging_package
   m_TagString: Untagged
   m_Icon: {fileID: 0}
