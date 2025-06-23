@@ -10,11 +10,14 @@ public class AudioManager : MonoBehaviour
 
     public AudioSource recycleSfxSource; // New AudioSource for recycle sound
     public AudioSource walkSfxSource; // New AudioSource for walk sound loop
+    public AudioSource runSfxSource; // New AudioSource for run sound sequence
 
     [Header("Player Audio Clips")]
     public AudioClip playerThrowClip;
-    public AudioClip jumpClip;
-    public AudioClip walkClip;
+    public AudioClip[] jumpStartClips; // New array for jump start sounds
+    public AudioClip[] jumpLandClips; // New array for landing sounds
+    public AudioClip[] walkClips; // Changed to array for random walk sounds
+    public AudioClip[] runClips; // New array for random run sounds
     public AudioClip shieldActivateClip;
 
     [Header("Enemy Audio Clips")]
@@ -73,9 +76,10 @@ public class AudioManager : MonoBehaviour
     // New methods to control walk sound loop
     public void StartWalkSFX()
     {
-        if (walkClip != null && walkSfxSource != null && !walkSfxSource.isPlaying)
+        if (walkClips != null && walkClips.Length > 0 && walkSfxSource != null && !walkSfxSource.isPlaying)
         {
-            walkSfxSource.clip = walkClip;
+            int index = Random.Range(0, walkClips.Length);
+            walkSfxSource.clip = walkClips[index];
             walkSfxSource.loop = true;
             walkSfxSource.Play();
         }
@@ -86,6 +90,38 @@ public class AudioManager : MonoBehaviour
         if (walkSfxSource != null && walkSfxSource.isPlaying)
         {
             walkSfxSource.Stop();
+        }
+    }
+
+    // New method to play random run footstep sound without overlapping
+    public void PlayRunSFX()
+    {
+        if (runClips != null && runClips.Length > 0 && runSfxSource != null)
+        {
+            if (!runSfxSource.isPlaying)
+            {
+                int index = Random.Range(0, runClips.Length);
+                runSfxSource.clip = runClips[index];
+                runSfxSource.Play();
+            }
+        }
+    }
+
+    // New method to start running footstep sequence
+    public void StartRunSFX()
+    {
+        if (runClips != null && runClips.Length > 0 && runSfxSource != null && !runSfxSource.isPlaying)
+        {
+            PlayRunSFX();
+        }
+    }
+
+    // New method to stop running footstep sequence
+    public void StopRunSFX()
+    {
+        if (runSfxSource != null && runSfxSource.isPlaying)
+        {
+            runSfxSource.Stop();
         }
     }
 

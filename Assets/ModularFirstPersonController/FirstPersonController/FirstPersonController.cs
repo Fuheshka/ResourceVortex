@@ -65,6 +65,14 @@ public class FirstPersonController : MonoBehaviour
     private float walkTimer = 0f;
     private float walkInterval = 0.5f; // default interval between steps, will be adjusted by speed
 
+    private float stepCycle = 0f;
+    private float nextStep = 0f;
+    public float stepInterval = 0.5f; // base interval for steps, can be adjusted
+
+    private float runStepCycle = 0f;
+    private float nextRunStep = 0f;
+    public float runStepInterval = 0.3f; // base interval for run steps, can be adjusted
+
     #region Sprint
 
     public bool enableSprint = true;
@@ -390,14 +398,29 @@ public class FirstPersonController : MonoBehaviour
                 float speed = targetVelocity.magnitude;
                 walkInterval = Mathf.Clamp(0.6f / speed, 0.2f, 0.6f);
 
-                walkTimer += Time.deltaTime;
-                if (walkTimer >= walkInterval)
+                stepCycle += (speed + (isSprinting ? sprintSpeed : 0)) * Time.deltaTime;
+                if (stepCycle > nextStep)
                 {
-                    walkTimer = 0f;
-                    if (AudioManager.Instance != null)
+                    nextStep = stepCycle + stepInterval;
+                if (AudioManager.Instance != null)
+                {
+                if (isSprinting)
+                {
+                    runStepCycle += (speed + sprintSpeed) * Time.deltaTime;
+                    if (runStepCycle > nextRunStep)
                     {
-                        AudioManager.Instance.PlaySFX(AudioManager.Instance.walkClip);
+                        nextRunStep = runStepCycle + runStepInterval;
+                        if (AudioManager.Instance != null)
+                        {
+                            AudioManager.Instance.PlaySFX(AudioManager.Instance.runClips[Random.Range(0, AudioManager.Instance.runClips.Length)]);
+                        }
                     }
+                }
+                else
+                {
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.walkClips[Random.Range(0, AudioManager.Instance.walkClips.Length)]);
+                }
+                }
                 }
             }
             else
@@ -406,6 +429,10 @@ public class FirstPersonController : MonoBehaviour
                 {
                     isWalking = false;
                     walkTimer = 0f;
+                    stepCycle = 0f;
+                    nextStep = 0f;
+                    runStepCycle = 0f;
+                    nextRunStep = 0f;
                 }
             }
 
@@ -473,10 +500,19 @@ public class FirstPersonController : MonoBehaviour
         Vector3 direction = transform.TransformDirection(Vector3.down);
         float distance = .75f;
 
+        bool wasGrounded = isGrounded;
+
         if (Physics.Raycast(origin, direction, out RaycastHit hit, distance))
         {
             Debug.DrawRay(origin, direction * distance, Color.red);
             isGrounded = true;
+
+            // Play landing sound when just landed
+            if (!wasGrounded && AudioManager.Instance != null && AudioManager.Instance.jumpLandClips.Length > 0)
+            {
+                int index = Random.Range(0, AudioManager.Instance.jumpLandClips.Length);
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.jumpLandClips[index]);
+            }
         }
         else
         {
@@ -492,10 +528,11 @@ public class FirstPersonController : MonoBehaviour
             rb.AddForce(0f, jumpPower, 0f, ForceMode.Impulse);
             isGrounded = false;
 
-            // Play jump sound
-            if (AudioManager.Instance != null)
+            // Play jump start sound
+            if (AudioManager.Instance != null && AudioManager.Instance.jumpStartClips.Length > 0)
             {
-                AudioManager.Instance.PlaySFX(AudioManager.Instance.jumpClip);
+                int index = Random.Range(0, AudioManager.Instance.jumpStartClips.Length);
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.jumpStartClips[index]);
             }
         }
 

@@ -897,6 +897,135 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+--- !u!1 &507376773
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 507376775}
+  - component: {fileID: 507376774}
+  m_Layer: 0
+  m_Name: RunSFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &507376774
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507376773}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &507376775
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507376773}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 890644970}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &554365435 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4459864850019384750, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
@@ -1298,6 +1427,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b510cc0db8fae499c9164f1c63c62b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 0}
+  spawnInterval: 3
   spawnRadius: 10
 --- !u!4 &742372071
 Transform:
@@ -1458,9 +1589,44 @@ MonoBehaviour:
   musicSource: {fileID: 698700592}
   recycleSfxSource: {fileID: 1367847531}
   walkSfxSource: {fileID: 132299351}
+  runSfxSource: {fileID: 507376774}
   playerThrowClip: {fileID: 8300000, guid: c7ebec9ba393ea840b105bba83e94eec, type: 3}
-  jumpClip: {fileID: 8300000, guid: 0ed4da8babba1994fb15a5a946e0542e, type: 3}
-  walkClip: {fileID: 8300000, guid: a548f966066252f44a1fc45449271a51, type: 3}
+  jumpStartClips:
+  - {fileID: 8300000, guid: 4d9393b878e050f419d7a013481ee1be, type: 3}
+  - {fileID: 8300000, guid: db34f8cd9e727df458b3246397175ecb, type: 3}
+  - {fileID: 8300000, guid: aa7788c589efdf549944091a69e6f86d, type: 3}
+  - {fileID: 8300000, guid: ee1e7bc93927f084aacf19e599ef9871, type: 3}
+  - {fileID: 8300000, guid: 804298d51a47b614ea6af8508adcfa6e, type: 3}
+  - {fileID: 8300000, guid: 3c72730833e7d414ba3ad63f004e3003, type: 3}
+  - {fileID: 8300000, guid: 4663984ee3c483640b90adfe903380fa, type: 3}
+  - {fileID: 8300000, guid: 0bc217c1606dba34e9478eb3556ccb08, type: 3}
+  jumpLandClips:
+  - {fileID: 8300000, guid: db3ee4ac3be37c0488e533547ab7dcf7, type: 3}
+  - {fileID: 8300000, guid: 4e4e6397d855e8d4fbe1024d8ed7fae8, type: 3}
+  - {fileID: 8300000, guid: 0bbe5b2e9983b7644afe7027f6a72f7b, type: 3}
+  - {fileID: 8300000, guid: 4ee7fb743341c644e95b1c8fd96597fe, type: 3}
+  - {fileID: 8300000, guid: 337a4e1843a2f9e439260e0608e01a19, type: 3}
+  - {fileID: 8300000, guid: 427c629aeec1f3c47922caed56c6cb79, type: 3}
+  - {fileID: 8300000, guid: d37cf7f6c5e5da447b1ec8cf4b928d1c, type: 3}
+  - {fileID: 8300000, guid: 8a7dfcfb215fbe9439cb2915a893ac98, type: 3}
+  walkClips:
+  - {fileID: 8300000, guid: 9b96d9bffbb079b418616ddde4c3fb10, type: 3}
+  - {fileID: 8300000, guid: fd2c2bbdff060b14c94b0f2a372f6f94, type: 3}
+  - {fileID: 8300000, guid: 3c2032f824ee4ec4a9ac897de3cd0e50, type: 3}
+  - {fileID: 8300000, guid: 65fc42128d123c442ac03fb683bd48a2, type: 3}
+  - {fileID: 8300000, guid: 56f2df6cf0b7b7d49ad540101c0af46e, type: 3}
+  - {fileID: 8300000, guid: 2dbf6c9389f15d244909d7dbfea673eb, type: 3}
+  - {fileID: 8300000, guid: 6c545128066ebaf4c8467eaae576d704, type: 3}
+  - {fileID: 8300000, guid: f8b627cfad7a8ce4ea65849ab2096c1e, type: 3}
+  runClips:
+  - {fileID: 8300000, guid: c6978018ed2d7ed48a2abe22711abc2f, type: 3}
+  - {fileID: 8300000, guid: f7484207b3eb87c45867e7d7c187ce1a, type: 3}
+  - {fileID: 8300000, guid: dcb984862bbbfac438176c6755be928c, type: 3}
+  - {fileID: 8300000, guid: a2e88bc9104e7d2469bcd10e3ba32775, type: 3}
+  - {fileID: 8300000, guid: ed25dfb9c4551b14e82f6c422f672571, type: 3}
+  - {fileID: 8300000, guid: b577093ea882eb244851c3aa553ad76a, type: 3}
+  - {fileID: 8300000, guid: a3962c30da288f54fb890df652bae6a1, type: 3}
+  - {fileID: 8300000, guid: ba187c870fdd8154f8bdbe1e6642399b, type: 3}
   shieldActivateClip: {fileID: 0}
   enemySpawnClip: {fileID: 0}
   enemyDeathClip: {fileID: 0}
@@ -1490,6 +1656,7 @@ Transform:
   - {fileID: 698700593}
   - {fileID: 1367847532}
   - {fileID: 132299352}
+  - {fileID: 507376775}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &958630331
@@ -1965,6 +2132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b510cc0db8fae499c9164f1c63c62b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 0}
+  spawnInterval: 3
   spawnRadius: 10
 --- !u!4 &1453947909
 Transform:

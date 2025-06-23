@@ -1,58 +1,42 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public float spawnRadius = 10f; // Радиус спавна
-    private Queue<SpawnTask> spawnQueue = new Queue<SpawnTask>(); // Очередь задач спавна
+    public GameObject enemyPrefab;
+    public float spawnInterval = 3f;
+    public float spawnRadius = 10f;
+
+    private float timer;
+
+    private Queue<GameObject> enemyQueue = new Queue<GameObject>();
+    private float currentSpawnInterval;
     private bool isSpawning = false;
 
-    private class SpawnTask
+    void Update()
     {
-        public GameObject enemyPrefab;
-        public int count;
-        public float spawnInterval;
-
-        public SpawnTask(GameObject prefab, int count, float interval)
+        if (isSpawning && enemyQueue.Count > 0)
         {
-            this.enemyPrefab = prefab;
-            this.count = count;
-            this.spawnInterval = interval;
-        }
-    }
-
-    public void QueueEnemies(GameObject enemyPrefab, int count, float spawnInterval)
-    {
-        spawnQueue.Enqueue(new SpawnTask(enemyPrefab, count, spawnInterval));
-        if (!isSpawning)
-        {
-            StartCoroutine(SpawnEnemies());
-        }
-    }
-
-    IEnumerator SpawnEnemies()
-    {
-        isSpawning = true;
-
-        while (spawnQueue.Count > 0)
-        {
-            SpawnTask task = spawnQueue.Dequeue();
-            for (int i = 0; i < task.count; i++)
+            timer += Time.deltaTime;
+            if (timer >= currentSpawnInterval)
             {
-                SpawnEnemy(task.enemyPrefab);
-                yield return new WaitForSeconds(task.spawnInterval);
+                SpawnEnemy(enemyQueue.Dequeue());
+                timer = 0f;
             }
         }
-
-        isSpawning = false;
+        else
+        {
+            timer = 0f;
+            isSpawning = false;
+        }
     }
 
-    void SpawnEnemy(GameObject enemyPrefab)
+    void SpawnEnemy(GameObject enemy)
     {
         Vector3 spawnPosition = transform.position + Random.insideUnitSphere * spawnRadius;
 
-        // Raycast вниз для поиска поверхности
+        // Raycast down to find ground height
         RaycastHit hit;
         if (Physics.Raycast(spawnPosition + Vector3.up * 50f, Vector3.down, out hit, 100f))
         {
@@ -60,20 +44,30 @@ public class EnemySpawner : MonoBehaviour
         }
         else
         {
-            spawnPosition.y = 0f; // Резервная высота
+            spawnPosition.y = 0f; // fallback ground level
         }
 
-        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        Instantiate(enemy, spawnPosition, Quaternion.identity);
 
-        // Проигрываем звук спавна
+        // Play enemy spawn sound
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX(AudioManager.Instance.enemySpawnClip);
         }
     }
 
+    public void QueueEnemies(GameObject prefab, int count, float interval)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            enemyQueue.Enqueue(prefab);
+        }
+        currentSpawnInterval = interval;
+        isSpawning = true;
+    }
+
     public bool IsSpawning()
     {
-        return isSpawning;
+        return isSpawning || enemyQueue.Count > 0;
     }
 }
