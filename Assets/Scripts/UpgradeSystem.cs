@@ -15,6 +15,12 @@ public class UpgradeSystem : MonoBehaviour
             currentUpgradeLevel++;
             playerThrow.throwForce += throwForceUpgradeAmount;
             Debug.Log("Throw power upgraded to level " + currentUpgradeLevel);
+
+            // Play upgrade purchase sound
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.upgradePurchaseClip);
+            }
         }
         else
         {

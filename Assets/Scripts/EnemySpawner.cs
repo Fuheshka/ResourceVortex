@@ -34,5 +34,11 @@ public class EnemySpawner : MonoBehaviour
         }
 
         Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+
+        // Play enemy spawn sound
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.enemySpawnClip);
+        }
     }
 }

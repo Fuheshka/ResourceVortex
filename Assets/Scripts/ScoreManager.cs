@@ -6,7 +6,7 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager Instance;
 
     private int score = 0;
-    private TextMeshProUGUI scoreText; // Ссылка на текстовый элемент
+    private TextMeshProUGUI scoreText; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
     void Awake()
     {
@@ -23,7 +23,7 @@ public class ScoreManager : MonoBehaviour
 
     void Start()
     {
-        // Находим текстовый элемент при старте
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         UpdateScoreUI();
     }
@@ -33,6 +33,12 @@ public class ScoreManager : MonoBehaviour
         score += points;
         UpdateScoreUI();
         Debug.Log("Score: " + score);
+
+        // Play score sound
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.scoreClip);
+        }
     }
 
     public int GetScore()
@@ -48,7 +54,7 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-/*    // Для работы при перезагрузке сцены
+/*    // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -61,7 +67,7 @@ public class ScoreManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // При загрузке новой сцены находим текстовый элемент снова
+        // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         UpdateScoreUI();
     }*/

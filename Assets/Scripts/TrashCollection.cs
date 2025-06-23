@@ -4,24 +4,24 @@ using System.Collections;
 
 public class TrashCollection : MonoBehaviour
 {
-    public LayerMask collectableLayer; // Слой для собираемых предметов
-    public KeyCode collectKey = KeyCode.E; // Клавиша для сбора
-    public KeyCode compressKey = KeyCode.F; // Клавиша для сжатия
-    public float collectionRadius = 3f; // Радиус области сбора
-    public int bulletsPerCompression = 1; // Количество патронов за сжатие
-    public int trashPerBullet = 5; // Сколько мусора нужно для патрона
-    public TextMeshProUGUI counterText; // UI текст для счетчика
-    public TextMeshProUGUI collectPromptText; // UI текст для подсказки
-    public PlayerThrow playerThrow; // Ссылка на скрипт метания
-    public float compressionDelay = 0.5f; // Задержка между сжатиями
+    public LayerMask collectableLayer; // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    public KeyCode collectKey = KeyCode.E; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    public KeyCode compressKey = KeyCode.F; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+    public float collectionRadius = 3f; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    public int bulletsPerCompression = 1; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+    public int trashPerBullet = 5; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    public TextMeshProUGUI counterText; // UI пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    public TextMeshProUGUI collectPromptText; // UI пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    public PlayerThrow playerThrow; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    public float compressionDelay = 0.5f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
-    private int trashCount = 0; // Счетчик мусора
-    public int bulletCount = 0; // Счетчик патронов
-    private bool isCompressing = false; // Флаг для предотвращения множественных сжатий
+    private int trashCount = 0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+    public int bulletCount = 0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    private bool isCompressing = false; // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
     void Start()
     {
-        // Инициализация текста счетчика
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         if (counterText != null)
         {
             UpdateCounterText();
@@ -31,17 +31,17 @@ public class TrashCollection : MonoBehaviour
             Debug.LogWarning("Counter Text is not assigned in TrashCollection script.");
         }
 
-        // Инициализация текста подсказки
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         if (collectPromptText != null)
         {
-            collectPromptText.gameObject.SetActive(false); // Скрываем изначально
+            collectPromptText.gameObject.SetActive(false); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         }
         else
         {
             Debug.LogWarning("Collect Prompt Text is not assigned in TrashCollection script.");
         }
 
-        // Проверка наличия скрипта PlayerThrow
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ PlayerThrow
         if (playerThrow == null)
         {
             playerThrow = GetComponent<PlayerThrow>();
@@ -54,16 +54,16 @@ public class TrashCollection : MonoBehaviour
 
     void Update()
     {
-        // Проверка наличия собираемых объектов
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         UpdateCollectPrompt();
 
-        // Проверка нажатия клавиши для сбора
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         if (Input.GetKeyDown(collectKey))
         {
             CollectTrashInRadius();
         }
 
-        // Проверка нажатия клавиши для сжатия
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         if (Input.GetKeyDown(compressKey) && !isCompressing)
         {
             StartCoroutine(CompressAllTrash());
@@ -72,7 +72,7 @@ public class TrashCollection : MonoBehaviour
 
     void UpdateCollectPrompt()
     {
-        // Проверяем, есть ли собираемые объекты в радиусе
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         Collider[] colliders = Physics.OverlapSphere(transform.position, collectionRadius, collectableLayer);
         bool canCollect = false;
 
@@ -85,7 +85,7 @@ public class TrashCollection : MonoBehaviour
             }
         }
 
-        // Показываем или скрываем подсказку
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         if (collectPromptText != null)
         {
             collectPromptText.gameObject.SetActive(canCollect);
@@ -98,12 +98,12 @@ public class TrashCollection : MonoBehaviour
 
     void CollectTrashInRadius()
     {
-        // Находим все коллайдеры в радиусе
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         Collider[] colliders = Physics.OverlapSphere(transform.position, collectionRadius, collectableLayer);
 
         foreach (Collider col in colliders)
         {
-            // Проверяем слой
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
             if (collectableLayer.value == (collectableLayer.value | (1 << col.gameObject.layer)))
             {
                 CollectTrash(col.gameObject);
@@ -115,23 +115,23 @@ public class TrashCollection : MonoBehaviour
     {
         trashCount++;
         UpdateCounterText();
-        Destroy(trash); // Удаляем собранный объект
+        Destroy(trash); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         Debug.Log($"Collected trash. Total: {trashCount}");
     }
 
     IEnumerator CompressAllTrash()
     {
-        isCompressing = true; // Блокируем повторные сжатия
+        isCompressing = true; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         int totalBulletsCreated = 0;
 
-        // Пока хватает мусора для сжатия
+        // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         while (trashCount >= trashPerBullet)
         {
             trashCount -= trashPerBullet;
             bulletCount += bulletsPerCompression;
             totalBulletsCreated += bulletsPerCompression;
 
-            // Обновляем префаб в PlayerThrow
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ PlayerThrow
             if (playerThrow != null && playerThrow.trashPrefab != null)
             {
                 playerThrow.trashPrefab.tag = "bullet";
@@ -144,7 +144,14 @@ public class TrashCollection : MonoBehaviour
             }
 
             UpdateCounterText();
-            yield return new WaitForSeconds(compressionDelay); // Задержка между сжатиями
+
+            // Play trash recycle sound
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.trashRecycleClip);
+            }
+
+            yield return new WaitForSeconds(compressionDelay); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         }
 
         if (totalBulletsCreated > 0)
@@ -156,7 +163,7 @@ public class TrashCollection : MonoBehaviour
             Debug.Log($"Not enough trash to compress. Need {trashPerBullet}, have {trashCount}.");
         }
 
-        isCompressing = false; // Разрешаем новые сжатия
+        isCompressing = false; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     }
 
     public void UpdateCounterText()
@@ -167,7 +174,7 @@ public class TrashCollection : MonoBehaviour
         }
     }
 
-    // Визуализация радиуса в редакторе
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;

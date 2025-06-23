@@ -43,6 +43,12 @@ public class Shield : MonoBehaviour
         {
             shieldObject.SetActive(true);
         }
+
+        // Play shield activate sound
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.shieldActivateClip);
+        }
     }
 
     void DeactivateShield()

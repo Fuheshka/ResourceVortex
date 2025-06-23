@@ -7,11 +7,11 @@ public class PlayerThrow : MonoBehaviour
     public GameObject trashPrefab;
     public Camera playerCamera;
     public float maxThrowDistance = 100f;
-    public TrashCollection trashCollection; // Ссылка на TrashCollection для доступа к bulletCount
+    public TrashCollection trashCollection; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ TrashCollection пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ bulletCount
 
     void Start()
     {
-        // Проверка наличия TrashCollection
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ TrashCollection
         if (trashCollection == null)
         {
             trashCollection = GetComponent<TrashCollection>();
@@ -32,7 +32,7 @@ public class PlayerThrow : MonoBehaviour
 
     void ThrowTrash()
     {
-        // Проверка наличия пуль
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         if (trashCollection == null || trashCollection.bulletCount <= 0)
         {
             Debug.LogWarning("Cannot throw: No bullets available or TrashCollection not assigned.");
@@ -60,13 +60,19 @@ public class PlayerThrow : MonoBehaviour
         if (rb == null)
         {
             Debug.LogWarning("Thrown trash prefab does not have a Rigidbody component.");
-            Destroy(thrownTrash); // Уничтожаем объект, если нет Rigidbody
+            Destroy(thrownTrash); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ Rigidbody
             return;
         }
 
-        // Уменьшаем количество пуль
+        // Play throw sound
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.playerThrowClip);
+        }
+
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         trashCollection.bulletCount--;
-        trashCollection.UpdateCounterText(); // Обновляем UI счетчик
+        trashCollection.UpdateCounterText(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ UI пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
         rb.isKinematic = false;
         rb.linearVelocity = throwDirection * throwForce;

@@ -377,7 +377,16 @@ public class FirstPersonController : MonoBehaviour
             // Will allow head bob
             if (targetVelocity.x != 0 || targetVelocity.z != 0 && isGrounded)
             {
-                isWalking = true;
+                if (!isWalking)
+                {
+                    isWalking = true;
+
+                    // Play walk sound
+                    if (AudioManager.Instance != null)
+                    {
+                        AudioManager.Instance.PlaySFX(AudioManager.Instance.walkClip);
+                    }
+                }
             }
             else
             {
@@ -466,6 +475,12 @@ public class FirstPersonController : MonoBehaviour
         {
             rb.AddForce(0f, jumpPower, 0f, ForceMode.Impulse);
             isGrounded = false;
+
+            // Play jump sound
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.jumpClip);
+            }
         }
 
         // When crouched and using toggle system, will uncrouch for a jump
