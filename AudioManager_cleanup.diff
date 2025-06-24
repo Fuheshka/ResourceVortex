@@ -1,0 +1,62 @@
+<<<<<<<
+public void SetDynamicMusicPlaying(bool value)
+{
+    isDynamicMusicPlaying = value;
+    Debug.Log($"AudioManager: isDynamicMusicPlaying set to {value}");
+}
+=======
+
+>>>>>>> 
+<<<<<<<
+public void UnlockMusic()
+{
+    isMusicLocked = false;
+    Debug.Log("AudioManager: Music unlocked, dynamic music can now play.");
+}
+=======
+
+>>>>>>> 
+<<<<<<<
+public IEnumerator FadeOutMusic(float duration)
+{
+    if (musicSourceA == null) yield break;
+
+    float startVolume = musicSourceA.volume;
+
+    float time = 0f;
+    while (time < duration)
+    {
+        time += Time.deltaTime;
+        musicSourceA.volume = Mathf.Lerp(startVolume, 0f, time / duration);
+        yield return null;
+    }
+
+    musicSourceA.Stop();
+    musicSourceA.volume = musicVolume;
+}
+=======
+
+>>>>>>> 
+<<<<<<<
+public IEnumerator FadeInMusic(AudioClip clip, float duration)
+{
+    if (musicSourceA == null || clip == null) yield break;
+
+    musicSourceA.clip = clip;
+    musicSourceA.volume = 0f;
+    musicSourceA.loop = true;
+    musicSourceA.Play();
+
+    float time = 0f;
+    while (time < duration)
+    {
+        time += Time.deltaTime;
+        musicSourceA.volume = Mathf.Lerp(0f, musicVolume, time / duration);
+        yield return null;
+    }
+
+    musicSourceA.volume = musicVolume;
+}
+=======
+
+>>>>>>>

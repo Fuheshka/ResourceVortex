@@ -65,6 +65,7 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Player died!");
+        // Removed call to PlayCalmMusicOnDeath since it no longer exists
         if (deathScreenManager != null)
         {
             deathScreenManager.ShowDeathScreen();

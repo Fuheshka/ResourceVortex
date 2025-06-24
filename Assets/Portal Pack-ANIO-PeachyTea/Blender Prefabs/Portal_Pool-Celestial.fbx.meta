@@ -3,7 +3,17 @@ guid: 940fc81bb8e1b974ea7a1903958528e8
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Portal_Pool-Celestial
+    second: {fileID: 2100000, guid: f97b47c567e2e1544a3211831d2761db, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: T_Pool_Celestial
+    second: {fileID: 2800000, guid: b4ea14af988649f4ca52f3fb5640ae37, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

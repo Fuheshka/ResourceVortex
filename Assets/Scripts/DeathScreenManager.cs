@@ -234,6 +234,13 @@ public class DeathScreenManager : MonoBehaviour
             waveManager.ResetWaves();
             waveManager.RestartWaves();
         }
+
+        // Reset AudioManager music state on restart
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.ResetMusicState();
+            // Removed explicit PlayMusic call to allow dynamic music switching after restart
+        }
     }
 
     void UpdateBestScore()

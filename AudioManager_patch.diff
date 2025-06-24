@@ -1,0 +1,211 @@
+<<<<<<<
+    public AudioSource sfxSource;
+    public AudioSource musicSourceA;
+    public AudioSource musicSourceB;
+
+    private AudioSource activeMusicSource;
+    private AudioSource inactiveMusicSource;
+=======
+    public AudioSource sfxSource;
+    public AudioSource musicSourceA;
+
+>>>>>>> 
+<<<<<<<
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+
+            activeMusicSource = musicSourceA;
+            inactiveMusicSource = musicSourceB;
+
+            if (activeMusicSource != null)
+            {
+                activeMusicSource.loop = true;
+                activeMusicSource.volume = musicVolume;
+            }
+            if (inactiveMusicSource != null)
+            {
+                inactiveMusicSource.loop = true;
+                inactiveMusicSource.volume = 0f;
+            }
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+=======
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+
+            if (musicSourceA != null)
+            {
+                musicSourceA.loop = true;
+                musicSourceA.volume = musicVolume;
+            }
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+>>>>>>> 
+<<<<<<<
+public void ResetMusicState()
+{
+    Debug.Log("AudioManager: ResetMusicState called, switching to calmMusic.");
+    SetDynamicMusicPlaying(false);
+
+    // Reset active and inactive music sources to initial assignment
+    activeMusicSource = musicSourceA;
+    inactiveMusicSource = musicSourceB;
+
+    if (activeMusicSource != null && calmMusic != null)
+    {
+        activeMusicSource.clip = calmMusic;
+        StartCoroutine(FadeInMusic(calmMusic, fadeDuration));
+        Debug.Log("AudioManager: calmMusic started playing with fade in.");
+    }
+    else
+    {
+        Debug.LogWarning("AudioManager: activeMusicSource or calmMusic is null in ResetMusicState.");
+    }
+}
+=======
+public void ResetMusicState()
+{
+    Debug.Log("AudioManager: ResetMusicState called, switching to calmMusic.");
+    SetDynamicMusicPlaying(false);
+
+    if (musicSourceA != null && calmMusic != null)
+    {
+        PlayMusic(calmMusic);
+        Debug.Log("AudioManager: calmMusic started playing.");
+    }
+    else
+    {
+        Debug.LogWarning("AudioManager: musicSourceA or calmMusic is null in ResetMusicState.");
+    }
+}
+>>>>>>> 
+<<<<<<<
+private void Update()
+{
+    if (waveManager == null || activeMusicSource == null) return;
+
+    bool enemiesPresent = waveManager.IsWaveInProgress() || (FindObjectsOfType<EnemyAI>().Length > 0);
+
+    if (enemiesPresent && !isDynamicMusicPlaying)
+    {
+        StartCoroutine(CrossfadeMusic(dynamicMusic, fadeDuration));
+        isDynamicMusicPlaying = true;
+    }
+    else if (!enemiesPresent && isDynamicMusicPlaying)
+    {
+        StartCoroutine(CrossfadeMusic(calmMusic, fadeDuration));
+        isDynamicMusicPlaying = false;
+    }
+}
+=======
+private void Update()
+{
+    if (waveManager == null || musicSourceA == null) return;
+
+    bool enemiesPresent = waveManager.IsWaveInProgress() || (FindObjectsOfType<EnemyAI>().Length > 0);
+
+    if (enemiesPresent && !isDynamicMusicPlaying)
+    {
+        PlayMusic(dynamicMusic);
+        isDynamicMusicPlaying = true;
+    }
+    else if (!enemiesPresent && isDynamicMusicPlaying)
+    {
+        PlayMusic(calmMusic);
+        isDynamicMusicPlaying = false;
+    }
+}
+>>>>>>> 
+<<<<<<<
+public IEnumerator CrossfadeMusic(AudioClip newClip, float duration)
+{
+    if (activeMusicSource == null || inactiveMusicSource == null || newClip == null) yield break;
+
+    Debug.Log($"AudioManager: Starting CrossfadeMusic to clip {newClip.name} over {duration} seconds. Current musicVolume: {musicVolume}");
+
+    inactiveMusicSource.clip = newClip;
+    inactiveMusicSource.volume = 0f;
+    inactiveMusicSource.Play();
+
+    float time = 0f;
+    while (time < duration)
+    {
+        time += Time.deltaTime;
+        float t = Mathf.SmoothStep(0f, 1f, time / duration);
+        Debug.Log($"AudioManager: musicVolume before Lerp: {musicVolume}");
+        activeMusicSource.volume = Mathf.Lerp(musicVolume, 0f, t);
+        inactiveMusicSource.volume = Mathf.Lerp(0f, musicVolume, t);
+        Debug.Log($"AudioManager: Crossfade progress {t:F2}, active volume {activeMusicSource.volume:F3}, inactive volume {inactiveMusicSource.volume:F3}");
+        Debug.Log($"AudioManager: musicVolume after Lerp: {musicVolume}");
+        yield return null;
+    }
+
+    activeMusicSource.Stop();
+
+    AudioSource temp = activeMusicSource;
+    activeMusicSource = inactiveMusicSource;
+    inactiveMusicSource = temp;
+
+    // Ensure volumes are set correctly after swapping
+    activeMusicSource.volume = musicVolume;
+    inactiveMusicSource.volume = 0f;
+
+    Debug.Log("AudioManager: CrossfadeMusic completed, swapped active and inactive music sources.");
+    Debug.Log($"AudioManager: activeMusicSource clip after swap: {activeMusicSource.clip?.name}");
+    Debug.Log($"AudioManager: inactiveMusicSource clip after swap: {inactiveMusicSource.clip?.name}");
+}
+=======
+
+>>>>>>> 
+<<<<<<<
+public void PlayMusic(AudioClip clip)
+{
+    if (clip != null && activeMusicSource != null)
+    {
+        Debug.Log($"AudioManager: Playing music clip {clip.name}");
+        activeMusicSource.clip = clip;
+        activeMusicSource.volume = musicVolume;
+        activeMusicSource.Play();
+    }
+    else
+    {
+        Debug.LogWarning("AudioManager: PlayMusic called with null clip or activeMusicSource");
+    }
+}
+=======
+public void PlayMusic(AudioClip clip)
+{
+    if (clip != null && musicSourceA != null)
+    {
+        if (musicSourceA.isPlaying)
+        {
+            musicSourceA.Stop();
+        }
+        Debug.Log($"AudioManager: Playing music clip {clip.name}");
+        musicSourceA.clip = clip;
+        musicSourceA.volume = musicVolume;
+        musicSourceA.loop = true;
+        musicSourceA.Play();
+    }
+    else
+    {
+        Debug.LogWarning("AudioManager: PlayMusic called with null clip or musicSourceA");
+    }
+}
+>>>>>>>
