@@ -2,61 +2,108 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class Wave
 {
-    public string waveName; // Название волны для удобства в инспекторе
-    public List<EnemySpawnConfig> enemies; // Список врагов для спавна
-    public float spawnInterval = 3f; // Интервал между спавнами врагов в волне
-    public float delayBeforeWave = 5f; // Задержка перед началом волны
+    public string waveName; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    public List<EnemySpawnConfig> enemies; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+    public float spawnInterval = 3f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
+    public float delayBeforeWave = 5f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 }
 
 [System.Serializable]
 public class EnemySpawnConfig
 {
-    public GameObject enemyPrefab; // Префаб врага
-    public int count; // Количество врагов этого типа
+    public GameObject enemyPrefab; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    public int count; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 }
+
 
 public class WaveManager : MonoBehaviour
 {
-    public static WaveManager Instance; // Singleton для доступа из других скриптов
-    public List<Wave> waves; // Список всех волн
-    public List<EnemySpawner> spawners; // Список спавнеров
-    public TextMeshProUGUI waveText; // UI текст для отображения текущей волны (опционально)
+    public List<Wave> waves; // List of waves
+    public List<EnemySpawner> spawners; // Enemy spawners
+    public TextMeshProUGUI waveText; // UI text for wave display
     private int currentWaveIndex = 0;
     private bool isWaveInProgress = false;
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        // No singleton or DontDestroyOnLoad
+    }
+
+    private void OnDestroy()
+    {
+        // No sceneLoaded event unsubscription needed
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Remove this method or adjust if subscribing to sceneLoaded
+    }
+
+    private void ResetInternalState()
+    {
+        // Add any additional reset logic here if needed
+        Debug.Log("WaveManager: ResetInternalState called");
+    }
+
+    public void ResetWaves()
+    {
+        Debug.Log("WaveManager: ResetWaves called");
+        currentWaveIndex = 0;
+        isWaveInProgress = false;
+    }
+
+    public void RestartWaves()
+    {
+        Debug.Log("WaveManager: RestartWaves called");
+        StartCoroutine(StartWaves());
+    }
+
+    public void ResetAndStartWaves()
+    {
+        Debug.Log("WaveManager: ResetAndStartWaves called");
+        StopAllCoroutines();
+        ResetWaves();
+        RestartWaves();
     }
 
     void Start()
     {
-        // Инициализация UI текста
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ UI пїЅпїЅпїЅпїЅпїЅпїЅ
         if (waveText != null)
         {
             UpdateWaveText();
         }
 
-        // Находим все спавнеры, если не назначены вручную
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         if (spawners.Count == 0)
         {
             spawners.AddRange(FindObjectsOfType<EnemySpawner>());
         }
 
-        // Запускаем первую волну
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         StartCoroutine(StartWaves());
+    }
+
+    public void ReinitializeReferences()
+    {
+        Debug.Log("WaveManager: ReinitializeReferences called");
+        // Always find and assign spawners and waveText after scene reload
+        spawners = new List<EnemySpawner>(FindObjectsOfType<EnemySpawner>());
+
+        GameObject waveTextObj = GameObject.Find("WaveNumber");
+        if (waveTextObj != null)
+        {
+            waveText = waveTextObj.GetComponent<TMPro.TextMeshProUGUI>();
+        }
+        else
+        {
+            waveText = FindObjectOfType<TMPro.TextMeshProUGUI>();
+        }
     }
 
     IEnumerator StartWaves()
@@ -66,28 +113,28 @@ public class WaveManager : MonoBehaviour
             Wave currentWave = waves[currentWaveIndex];
             isWaveInProgress = true;
 
-            // Обновляем UI
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ UI
             if (waveText != null)
             {
                 waveText.text = $"Wave {currentWaveIndex + 1}: {currentWave.waveName}";
             }
             Debug.Log($"Starting Wave {currentWaveIndex + 1}: {currentWave.waveName}");
 
-            // Ждем перед началом волны
+            // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
             yield return new WaitForSeconds(currentWave.delayBeforeWave);
 
-            // Распределяем врагов по спавнерам
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             int totalEnemies = 0;
             foreach (EnemySpawnConfig config in currentWave.enemies)
             {
                 totalEnemies += config.count;
             }
 
-            // Распределяем врагов равномерно между спавнерами
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             foreach (EnemySpawnConfig config in currentWave.enemies)
             {
                 int enemiesPerSpawner = config.count / spawners.Count;
-                int extraEnemies = config.count % spawners.Count; // Остаток для первого спавнера
+                int extraEnemies = config.count % spawners.Count; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
                 for (int i = 0; i < spawners.Count; i++)
                 {
@@ -99,7 +146,7 @@ public class WaveManager : MonoBehaviour
                 }
             }
 
-            // Ждем, пока все враги в волне будут заспавнены и уничтожены
+            // пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             while (GameObject.FindObjectsOfType<EnemyAI>().Length > 0 || spawners.Exists(s => s.IsSpawning()))
             {
                 yield return null;
@@ -109,7 +156,7 @@ public class WaveManager : MonoBehaviour
             currentWaveIndex++;
             UpdateWaveText();
 
-            // Если волны закончились
+            // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             if (currentWaveIndex >= waves.Count)
             {
                 Debug.Log("All waves completed!");

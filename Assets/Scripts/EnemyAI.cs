@@ -68,6 +68,12 @@ public class EnemyAI : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, target.position);
 
+        if (!agent.isOnNavMesh)
+        {
+            // Wait until agent is on NavMesh before setting destination
+            return;
+        }
+
         if (distance > attackRange)
         {
             agent.isStopped = false;

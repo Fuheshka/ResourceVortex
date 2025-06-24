@@ -14,6 +14,15 @@ public class EnemySpawner : MonoBehaviour
     private float currentSpawnInterval;
     private bool isSpawning = false;
 
+    void Awake()
+    {
+        // Initialize enemy spawning when script awakes
+        if (enemyPrefab != null)
+        {
+            QueueEnemies(enemyPrefab, 10, spawnInterval);
+        }
+    }
+
     void Update()
     {
         if (isSpawning && enemyQueue.Count > 0)

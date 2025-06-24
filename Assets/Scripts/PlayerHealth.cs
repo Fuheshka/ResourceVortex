@@ -7,15 +7,18 @@ public class PlayerHealth : MonoBehaviour
     [Header("Health Settings")]
     public int maxHealth = 100;
     private int currentHealth;
-    public Slider healthBarSlider; // Ссылка на полоску HP
-    public float invincibilityTime = 1f; // Время неуязвимости после удара
+    public Slider healthBarSlider; // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ HP
+    public float invincibilityTime = 1f; // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     private bool isInvincible = false;
+
+    [Header("Death Screen")]
+    public DeathScreenManager deathScreenManager;
 
     void Start()
     {
         currentHealth = maxHealth;
 
-        // Автопоиск Slider, если не назначен
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Slider, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         if (healthBarSlider == null)
         {
             healthBarSlider = GameObject.Find("PlayerHealthBar").GetComponent<Slider>();
@@ -28,8 +31,8 @@ public class PlayerHealth : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && !isInvincible)
         {
-            TakeDamage(10); // Урон от врага
-            StartCoroutine(InvincibilityFrame()); // Активируем неуязвимость
+            TakeDamage(10); // пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+            StartCoroutine(InvincibilityFrame()); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         }
     }
 
@@ -61,8 +64,14 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("Игрок умер!");
-        // Дополнительные действия: перезагрузка сцены, анимация смерти и т.д.
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("Player died!");
+        if (deathScreenManager != null)
+        {
+            deathScreenManager.ShowDeathScreen();
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }
