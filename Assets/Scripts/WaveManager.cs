@@ -111,30 +111,39 @@ public class WaveManager : MonoBehaviour
         while (currentWaveIndex < waves.Count)
         {
             Wave currentWave = waves[currentWaveIndex];
-            isWaveInProgress = true;
+            isWaveInProgress = false;
 
-            // ��������� UI
+            // Delay before wave with countdown display
+            float delay = currentWave.delayBeforeWave;
+            while (delay > 0f)
+            {
+                if (waveText != null)
+                {
+                    waveText.text = $"Next Wave ({currentWaveIndex + 1}/{waves.Count}): {currentWave.waveName} starts in {delay:F1} seconds";
+                }
+                yield return null;
+                delay -= Time.deltaTime;
+            }
+
+            // Wave started
+            isWaveInProgress = true;
             if (waveText != null)
             {
-                waveText.text = $"Wave {currentWaveIndex + 1}: {currentWave.waveName}";
+                waveText.text = $"Wave {currentWaveIndex + 1}/{waves.Count}: {currentWave.waveName}";
             }
             Debug.Log($"Starting Wave {currentWaveIndex + 1}: {currentWave.waveName}");
 
-            // ���� ����� ������� �����
-            yield return new WaitForSeconds(currentWave.delayBeforeWave);
-
-            // ������������ ������ �� ���������
+            // Spawn enemies
             int totalEnemies = 0;
             foreach (EnemySpawnConfig config in currentWave.enemies)
             {
                 totalEnemies += config.count;
             }
 
-            // ������������ ������ ���������� ����� ����������
             foreach (EnemySpawnConfig config in currentWave.enemies)
             {
                 int enemiesPerSpawner = config.count / spawners.Count;
-                int extraEnemies = config.count % spawners.Count; // ������� ��� ������� ��������
+                int extraEnemies = config.count % spawners.Count; // remainder for first spawner
 
                 for (int i = 0; i < spawners.Count; i++)
                 {
@@ -146,7 +155,7 @@ public class WaveManager : MonoBehaviour
                 }
             }
 
-            // ����, ���� ��� ����� � ����� ����� ���������� � ����������
+            // Wait for all enemies to be defeated and spawning to finish
             while (GameObject.FindObjectsOfType<EnemyAI>().Length > 0 || spawners.Exists(s => s.IsSpawning()))
             {
                 yield return null;
@@ -156,7 +165,6 @@ public class WaveManager : MonoBehaviour
             currentWaveIndex++;
             UpdateWaveText();
 
-            // ���� ����� �����������
             if (currentWaveIndex >= waves.Count)
             {
                 Debug.Log("All waves completed!");
