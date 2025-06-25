@@ -34,10 +34,16 @@ public class EnemyAI : MonoBehaviour
         rb.linearDamping = 3f;
         currentHealth = maxHealth;
 
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        // Find trash bin instead of player
+        GameObject trashBin = GameObject.FindGameObjectWithTag("TrashBin");
+        if (trashBin != null)
         {
-            target = player.transform;
+            target = trashBin.transform;
+            Debug.Log("Enemy target set to TrashBin: " + target.name);
+        }
+        else
+        {
+            Debug.LogWarning("TrashBin not found. Enemy will not have a target.");
         }
 
         if (healthBarSlider == null)
@@ -46,6 +52,8 @@ public class EnemyAI : MonoBehaviour
         }
         UpdateHealthBar();
     }
+
+    private bool isAttacking = false;
 
     void Update()
     {
@@ -64,9 +72,14 @@ public class EnemyAI : MonoBehaviour
             // Do not skip movement while knocked back
         }
 
-        if (target == null) return;
+        if (target == null)
+        {
+            Debug.LogWarning("Enemy has no target.");
+            return;
+        }
 
         float distance = Vector3.Distance(transform.position, target.position);
+        Debug.Log("Enemy distance to target: " + distance + ", attackRange: " + attackRange);
 
         if (!agent.isOnNavMesh)
         {
@@ -78,22 +91,53 @@ public class EnemyAI : MonoBehaviour
         {
             agent.isStopped = false;
             agent.SetDestination(target.position);
+            isAttacking = false;
+            Debug.Log("Enemy moving towards target.");
         }
         else
         {
             agent.isStopped = true;
-            if (Time.time - lastAttackTime > attackCooldown)
+            if (!isAttacking)
             {
-                Attack();
-                lastAttackTime = Time.time;
+                isAttacking = true;
+                Debug.Log("Enemy started attacking.");
+                StartCoroutine(AttackRoutine());
             }
         }
     }
 
+    System.Collections.IEnumerator AttackRoutine()
+    {
+        while (isAttacking)
+        {
+            Attack();
+            yield return new WaitForSeconds(attackCooldown);
+        }
+    }
+
+    void OnDisable()
+    {
+        isAttacking = false;
+    }
+
     void Attack()
     {
-        // Implement attack logic here, e.g., reduce player health
-        Debug.Log("Enemy attacks player for " + attackDamage + " damage.");
+        if (target == null)
+        {
+            Debug.LogWarning("Attack called but target is null.");
+            return;
+        }
+
+        TrashBin trashBin = target.GetComponentInParent<TrashBin>();
+        if (trashBin != null)
+        {
+            trashBin.TakeDamage(attackDamage);
+            Debug.Log("Enemy attacks trash bin for " + attackDamage + " damage.");
+        }
+        else
+        {
+            Debug.Log("Enemy attacks target for " + attackDamage + " damage.");
+        }
     }
 
     void OnCollisionEnter(Collision collision)
