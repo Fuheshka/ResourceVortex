@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class UpgradeUI : MonoBehaviour
 {
@@ -54,27 +55,129 @@ public class UpgradeUI : MonoBehaviour
     public TextMeshProUGUI portalSpawnCountCostText;
     public Button portalSpawnCountUpgradeButton;
 
+    // Colors for button states
+    public Color normalColor = Color.white;
+    public Color hoverColor = Color.yellow;
+    public Color pressedColor = Color.red;
+    public Color selectedColor = Color.green;
+
+    public Camera playerCamera;
+    public float maxRayDistance = 10f;
+    public LayerMask buttonLayerMask;
+
+    private Dictionary<Button, UpgradeSystem.UpgradeType> buttonUpgradeTypeMap;
+    private Button hoveredButton;
+    private Button selectedButton;
+
     void Start()
     {
-        UpdateUI();
+        buttonUpgradeTypeMap = new Dictionary<Button, UpgradeSystem.UpgradeType>()
+        {
+            { throwPowerUpgradeButton, UpgradeSystem.UpgradeType.ThrowPower },
+            { trashBinCapacityUpgradeButton, UpgradeSystem.UpgradeType.TrashBinCapacity },
+            { trashBinHealthUpgradeButton, UpgradeSystem.UpgradeType.TrashBinHealth },
+            { damageUpgradeButton, UpgradeSystem.UpgradeType.Damage },
+            { compressionSpeedUpgradeButton, UpgradeSystem.UpgradeType.CompressionSpeed },
+            { collectionRadiusUpgradeButton, UpgradeSystem.UpgradeType.CollectionRadius },
+            { portalSpawnRateUpgradeButton, UpgradeSystem.UpgradeType.PortalSpawnRate },
+            { portalSpawnRadiusUpgradeButton, UpgradeSystem.UpgradeType.PortalSpawnRadius },
+            { portalSpawnCountUpgradeButton, UpgradeSystem.UpgradeType.PortalSpawnCount }
+        };
 
-        throwPowerUpgradeButton.onClick.AddListener(() => Upgrade(UpgradeSystem.UpgradeType.ThrowPower));
-        trashBinCapacityUpgradeButton.onClick.AddListener(() => Upgrade(UpgradeSystem.UpgradeType.TrashBinCapacity));
-        trashBinHealthUpgradeButton.onClick.AddListener(() => Upgrade(UpgradeSystem.UpgradeType.TrashBinHealth));
-        damageUpgradeButton.onClick.AddListener(() => Upgrade(UpgradeSystem.UpgradeType.Damage));
-        compressionSpeedUpgradeButton.onClick.AddListener(() => Upgrade(UpgradeSystem.UpgradeType.CompressionSpeed));
-        collectionRadiusUpgradeButton.onClick.AddListener(() => Upgrade(UpgradeSystem.UpgradeType.CollectionRadius));
-        portalSpawnRateUpgradeButton.onClick.AddListener(() => Upgrade(UpgradeSystem.UpgradeType.PortalSpawnRate));
-        portalSpawnRadiusUpgradeButton.onClick.AddListener(() => Upgrade(UpgradeSystem.UpgradeType.PortalSpawnRadius));
-        portalSpawnCountUpgradeButton.onClick.AddListener(() => Upgrade(UpgradeSystem.UpgradeType.PortalSpawnCount));
+        UpdateUI();
     }
 
-    void Upgrade(UpgradeSystem.UpgradeType type)
+    void Update()
+    {
+        UpdateHoveredButton();
+
+        if (hoveredButton != null)
+        {
+            if (hoveredButton != selectedButton)
+            {
+                SetButtonColor(hoveredButton, hoverColor);
+            }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                OnButtonClicked(hoveredButton, buttonUpgradeTypeMap[hoveredButton]);
+            }
+        }
+        else
+        {
+            ResetHoveredButtonColor();
+        }
+    }
+
+    void UpdateHoveredButton()
+    {
+        if (playerCamera == null)
+        {
+            Debug.LogWarning("PlayerCamera is not assigned in UpgradeUI.");
+            return;
+        }
+
+        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, maxRayDistance, buttonLayerMask))
+        {
+            Button hitButton = hit.collider.GetComponent<Button>();
+            if (hitButton != null && buttonUpgradeTypeMap.ContainsKey(hitButton))
+            {
+                if (hoveredButton != hitButton)
+                {
+                    ResetHoveredButtonColor();
+                    hoveredButton = hitButton;
+                }
+                return;
+            }
+        }
+
+        ResetHoveredButtonColor();
+        hoveredButton = null;
+    }
+
+    void ResetHoveredButtonColor()
+    {
+        if (hoveredButton != null && hoveredButton != selectedButton)
+        {
+            SetButtonColor(hoveredButton, normalColor);
+        }
+    }
+
+    void OnButtonClicked(Button btn, UpgradeSystem.UpgradeType type)
     {
         if (upgradeSystem.Upgrade(type))
         {
             UpdateUI();
+            SetSelectedButton(btn);
         }
+    }
+
+    void SetSelectedButton(Button btn)
+    {
+        if (selectedButton != null)
+        {
+            SetButtonColor(selectedButton, normalColor);
+        }
+
+        selectedButton = btn;
+
+        if (selectedButton != null)
+        {
+            SetButtonColor(selectedButton, selectedColor);
+        }
+    }
+
+    void SetButtonColor(Button btn, Color color)
+    {
+        ColorBlock cb = btn.colors;
+        cb.normalColor = color;
+        cb.highlightedColor = color;
+        cb.pressedColor = color;
+        cb.selectedColor = color;
+        btn.colors = cb;
     }
 
     void UpdateUI()
@@ -101,12 +204,14 @@ public class UpgradeUI : MonoBehaviour
         {
             costText.text = "MAX";
             upgradeButton.interactable = false;
+            SetButtonColor(upgradeButton, normalColor);
         }
         else
         {
             int cost = upgradeSystem.upgradeCosts[type][level];
             costText.text = $"Cost: {cost}";
             upgradeButton.interactable = upgradeSystem.CanUpgrade(type);
+            SetButtonColor(upgradeButton, normalColor);
         }
     }
 
