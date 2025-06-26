@@ -67,7 +67,6 @@ public class GameStartManager : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, maxLookDistance, signLayerMask))
             {
-                Debug.Log($"Raycast hit: {hit.collider.gameObject.name}");
                 if (hit.collider.gameObject == signUI || hit.collider.transform.IsChildOf(signUI.transform))
                 {
                     isLookingAtSign = true;

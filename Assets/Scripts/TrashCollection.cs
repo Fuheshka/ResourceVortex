@@ -34,18 +34,10 @@ public class TrashCollection : MonoBehaviour
         {
             UpdateCounterText();
         }
-        else
-        {
-            Debug.LogWarning("Counter Text is not assigned in TrashCollection script.");
-        }
 
         if (collectPromptText != null)
         {
             collectPromptText.gameObject.SetActive(false);
-        }
-        else
-        {
-            Debug.LogWarning("Collect Prompt Text is not assigned in TrashCollection script.");
         }
 
         if (clearPromptText != null)
@@ -145,7 +137,6 @@ public class TrashCollection : MonoBehaviour
         trashCount++;
         UpdateCounterText();
         Destroy(trash); // ������� ��������� ������
-        Debug.Log($"Collected trash. Total: {trashCount}");
     }
 
     IEnumerator CompressAllTrash()
@@ -165,11 +156,6 @@ public class TrashCollection : MonoBehaviour
             {
                 playerThrow.trashPrefab.tag = "bullet";
                 playerThrow.trashPrefab.name = "Bullet";
-                Debug.Log($"Compressed {trashPerBullet} trash into {bulletsPerCompression} bullet(s). Total bullets: {bulletCount}");
-            }
-            else
-            {
-                Debug.LogWarning("Cannot compress: PlayerThrow or trashPrefab not assigned.");
             }
 
             UpdateCounterText();
@@ -183,16 +169,6 @@ public class TrashCollection : MonoBehaviour
 
             yield return new WaitForSeconds(compressionDelay); // �������� ����� ��������
         }
-
-        if (totalBulletsCreated > 0)
-        {
-            Debug.Log($"Compression complete: Created {totalBulletsCreated} bullet(s).");
-        }
-        else
-        {
-            Debug.Log($"Not enough trash to compress. Need {trashPerBullet}, have {trashCount}.");
-        }
-
         isCompressing = false; // ��������� ����� ������
     }
 
@@ -240,7 +216,6 @@ public class TrashCollection : MonoBehaviour
                 clearProgressImage.fillAmount = 0f;
                 clearProgressImage.gameObject.SetActive(false);
             }
-            Debug.Log("No nearby TrashBin to clear.");
             return;
         }
 
@@ -259,7 +234,6 @@ public class TrashCollection : MonoBehaviour
                         clearProgressImage.fillAmount = 0f;
                         clearProgressImage.gameObject.SetActive(false);
                     }
-                    Debug.Log("Player is not looking at the TrashBin.");
                     return;
                 }
             }
@@ -271,20 +245,14 @@ public class TrashCollection : MonoBehaviour
                     clearProgressImage.fillAmount = 0f;
                     clearProgressImage.gameObject.SetActive(false);
                 }
-                Debug.Log("Player is not looking at any object.");
                 return;
             }
-        }
-        else
-        {
-            Debug.LogWarning("PlayerCamera reference is not assigned in TrashCollection.");
         }
 
         if (Input.GetKey(collectKey))
         {
             if (clearProgressImage != null && !clearProgressImage.gameObject.activeSelf)
             {
-                Debug.Log("Activating clearProgressImage GameObject.");
                 clearProgressImage.gameObject.SetActive(true);
             }
 
@@ -293,13 +261,10 @@ public class TrashCollection : MonoBehaviour
             if (clearProgressImage != null)
             {
                 clearProgressImage.fillAmount = Mathf.Clamp01(clearKeyHoldTime / holdClearDuration);
-                Debug.Log($"clearProgressImage fillAmount updated to {clearProgressImage.fillAmount}");
             }
 
-            Debug.Log($"Holding clear key for {clearKeyHoldTime} seconds.");
             if (clearKeyHoldTime >= holdClearDuration)
             {
-                Debug.Log("Calling ClearTrash() on nearby TrashBin.");
                 nearbyBin.ClearTrash();
                 clearKeyHoldTime = 0f;
                 if (clearProgressImage != null)
@@ -307,7 +272,6 @@ public class TrashCollection : MonoBehaviour
                     clearProgressImage.fillAmount = 0f;
                     clearProgressImage.gameObject.SetActive(false);
                 }
-                Debug.Log("Trash bin cleared by player.");
             }
         }
         else
@@ -325,17 +289,12 @@ public class TrashCollection : MonoBehaviour
 
 TrashBin GetNearbyTrashBin()
 {
-    Debug.Log($"Player position for proximity check: {transform.position}");
-    Debug.Log($"TrashBinLayerMask value: {trashBinLayerMask.value}");
     Collider[] colliders = Physics.OverlapSphere(transform.position, clearTrashRadius, trashBinLayerMask);
-    Debug.Log($"Checking for TrashBin within radius {clearTrashRadius}. Found {colliders.Length} colliders.");
     foreach (Collider col in colliders)
     {
-        Debug.Log($"Collider layer: {col.gameObject.layer}, name: {col.gameObject.name}");
         if (col.gameObject == this.gameObject) // Ignore player's own collider
             continue;
 
-        Debug.Log($"Collider found at position: {col.transform.position}, GameObject: {col.gameObject.name}");
         TrashBin bin = col.GetComponent<TrashBin>();
         if (bin == null && col.transform.parent != null)
         {
@@ -347,11 +306,9 @@ TrashBin GetNearbyTrashBin()
         }
         if (bin != null)
         {
-            Debug.Log($"Found TrashBin: {bin.gameObject.name}");
             return bin;
         }
     }
-    Debug.Log("No TrashBin found nearby.");
     return null;
 }
 }
