@@ -173,3 +173,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   scorePerKill: 10
+  destroyHeight: -10
