@@ -4,6 +4,12 @@ using UnityEngine.UI;
 
 public class EnemyAI : MonoBehaviour
 {
+    public enum AttackTargetType
+    {
+        TrashBin,
+        Player
+    }
+
     [Header("Health Settings")]
     public int maxHealth = 3; // Enemy dies after 3 hits
     private int currentHealth;
@@ -16,6 +22,9 @@ public class EnemyAI : MonoBehaviour
 
     [Header("Score Settings")]
     public int scoreValue = 10;
+
+    [Header("Target Settings")]
+    public AttackTargetType attackTargetType = AttackTargetType.TrashBin;
 
     private Transform target;
     private NavMeshAgent agent;
@@ -34,16 +43,33 @@ public class EnemyAI : MonoBehaviour
         rb.linearDamping = 3f;
         currentHealth = maxHealth;
 
-        // Find trash bin instead of player
-        GameObject trashBin = GameObject.FindGameObjectWithTag("TrashBin");
-        if (trashBin != null)
+        switch (attackTargetType)
         {
-            target = trashBin.transform;
-            Debug.Log("Enemy target set to TrashBin: " + target.name);
-        }
-        else
-        {
-            Debug.LogWarning("TrashBin not found. Enemy will not have a target.");
+            case AttackTargetType.TrashBin:
+                GameObject trashBin = GameObject.FindGameObjectWithTag("TrashBin");
+                if (trashBin != null)
+                {
+                    target = trashBin.transform;
+                    Debug.Log("Enemy target set to TrashBin: " + target.name);
+                }
+                else
+                {
+                    Debug.LogWarning("TrashBin not found. Enemy will not have a target.");
+                }
+                break;
+
+            case AttackTargetType.Player:
+                GameObject player = GameObject.FindGameObjectWithTag("Player");
+                if (player != null)
+                {
+                    target = player.transform;
+                    Debug.Log("Enemy target set to Player: " + target.name);
+                }
+                else
+                {
+                    Debug.LogWarning("Player not found. Enemy will not have a target.");
+                }
+                break;
         }
 
         if (healthBarSlider == null)
@@ -128,15 +154,25 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
-        TrashBin trashBin = target.GetComponentInParent<TrashBin>();
-        if (trashBin != null)
+        switch (attackTargetType)
         {
-            trashBin.TakeDamage(attackDamage);
-            Debug.Log("Enemy attacks trash bin for " + attackDamage + " damage.");
-        }
-        else
-        {
-            Debug.Log("Enemy attacks target for " + attackDamage + " damage.");
+            case AttackTargetType.TrashBin:
+                TrashBin trashBin = target.GetComponentInParent<TrashBin>();
+                if (trashBin != null)
+                {
+                    trashBin.TakeDamage(attackDamage);
+                    Debug.Log("Enemy attacks trash bin for " + attackDamage + " damage.");
+                }
+                break;
+
+            case AttackTargetType.Player:
+                PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(attackDamage);
+                    Debug.Log("Enemy attacks player for " + attackDamage + " damage.");
+                }
+                break;
         }
     }
 

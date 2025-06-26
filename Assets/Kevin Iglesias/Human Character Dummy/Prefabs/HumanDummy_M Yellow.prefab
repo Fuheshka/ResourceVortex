@@ -553,10 +553,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   healthBarSlider: {fileID: 306045627793816939}
-  attackRange: 1
-  attackCooldown: 1
+  attackRange: 1.5
+  attackCooldown: 2
   attackDamage: 15
-  scoreValue: 15
+  scoreValue: 20
+  attackTargetType: 1
 --- !u!195 &8668944578568181070
 NavMeshAgent:
   m_ObjectHideFlags: 0
