@@ -3,31 +3,45 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [System.Serializable]
-public class Wave
+public class WaveData
 {
-    public string waveName; // �������� ����� ��� �������� � ����������
-    public List<EnemySpawnConfig> enemies; // ������ ������ ��� ������
-    public float spawnInterval = 3f; // �������� ����� �������� ������ � �����
-    public float delayBeforeWave = 5f; // �������� ����� ������� �����
+    public string waveName; // Name of the wave for display
+    public List<EnemySpawnConfig> enemies; // Enemies to spawn
+    public float spawnInterval = 3f; // Interval between spawns
+    public float delayBeforeWave = 5f; // Delay before wave starts
 }
 
 [System.Serializable]
 public class EnemySpawnConfig
 {
-    public GameObject enemyPrefab; // ������ �����
-    public int count; // ���������� ������ ����� ����
+    public GameObject enemyPrefab; // Enemy prefab
+    public int count; // Number of enemies
 }
 
+[System.Serializable]
+public class Wave
+{
+    public string waveName; // Name of the wave for display
+    public List<EnemySpawnConfig> enemies; // Enemies to spawn
+    public float spawnInterval = 3f; // Interval between spawns
+    public float delayBeforeWave = 5f; // Delay before wave starts
+}
 
 public class WaveManager : MonoBehaviour
 {
     public List<Wave> waves; // List of waves
     public List<EnemySpawner> spawners; // Enemy spawners
     public TextMeshProUGUI waveText; // UI text for wave display
+    public Button continueButton; // Continue button to proceed after upgrades
+
     private int currentWaveIndex = 0;
     private bool isWaveInProgress = false;
+    private bool waitingForContinue = false;
+
+    public UpgradeSystem upgradeSystem; // Reference to UpgradeSystem
 
     void Awake()
     {
@@ -73,6 +87,12 @@ public class WaveManager : MonoBehaviour
 
     void Start()
     {
+        // Initialize continue button listener
+        if (continueButton != null)
+        {
+            continueButton.onClick.AddListener(ContinueGame);
+        }
+
         // ������������� UI ������
         if (waveText != null)
         {
@@ -170,17 +190,31 @@ public class WaveManager : MonoBehaviour
             currentWaveIndex++;
             UpdateWaveText();
 
-            if (currentWaveIndex >= waves.Count)
-            {
-                Debug.Log("All waves completed!");
-                if (waveText != null)
+                // Convert score to upgrade currency after each wave
+                if (upgradeSystem != null)
                 {
-                    waveText.text = "All Waves Completed!";
+                    upgradeSystem.ConvertScoreToCurrency();
+
+                    // Do not pause game for upgrades, just show upgrade UI and wait for player to continue
+                    UpgradeUI upgradeUI = upgradeSystem.GetComponent<UpgradeUI>();
+                    if (upgradeUI != null)
+                    {
+                        upgradeUI.UpdateConvertedCurrencyText();
+                        upgradeUI.gameObject.SetActive(true);
+                    }
                 }
-                break;
+
+                if (currentWaveIndex >= waves.Count)
+                {
+                    Debug.Log("All waves completed!");
+                    if (waveText != null)
+                    {
+                        waveText.text = "All Waves Completed!";
+                    }
+                    break;
+                }
             }
         }
-    }
 
     void UpdateWaveText()
     {
@@ -197,4 +231,20 @@ public class WaveManager : MonoBehaviour
     {
         return isWaveInProgress;
     }
+
+        // Method to be called by UI button to continue game after upgrades
+        public void ContinueGame()
+        {
+                // Hide upgrade UI
+                if (upgradeSystem != null && upgradeSystem.GetComponent<UpgradeUI>() != null)
+                {
+                    upgradeSystem.GetComponent<UpgradeUI>().gameObject.SetActive(false);
+                }
+
+                // Start next wave if any
+                if (!isWaveInProgress && currentWaveIndex < waves.Count)
+                {
+                    StartCoroutine(StartWaves());
+                }
+            }
 }
