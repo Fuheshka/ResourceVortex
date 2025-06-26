@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TrashBin : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class TrashBin : MonoBehaviour
     public Slider healthBarSlider;
     public Slider trashFillSlider; // Slider to show trash fill level
 
+    public TMP_Text healthText; // Text to show health value
+    public TMP_Text trashFillText; // Text to show trash fill value
+
     void Awake()
     {
         binCollider = GetComponent<Collider>();
@@ -36,6 +40,7 @@ public class TrashBin : MonoBehaviour
         currentHealth = maxHealth;
         currentTrashAmount = 0;
         UpdateTrashFillUI();
+        UpdateHealthUI();
     }
 
     void OnTriggerEnter(Collider other)
@@ -97,6 +102,7 @@ public class TrashBin : MonoBehaviour
         {
             healthBarSlider.value = (float)currentHealth / maxHealth;
         }
+        UpdateHealthUI();
 
         if (currentHealth <= 0)
         {
@@ -122,6 +128,23 @@ public void ClearTrash()
         if (trashFillSlider != null)
         {
             trashFillSlider.value = (float)currentTrashAmount / maxTrashCapacity;
+        }
+        UpdateTrashFillText();
+    }
+
+    void UpdateHealthUI()
+    {
+        if (healthText != null)
+        {
+            healthText.text = currentHealth + " / " + maxHealth;
+        }
+    }
+
+    void UpdateTrashFillText()
+    {
+        if (trashFillText != null)
+        {
+            trashFillText.text = currentTrashAmount + " / " + maxTrashCapacity;
         }
     }
 
