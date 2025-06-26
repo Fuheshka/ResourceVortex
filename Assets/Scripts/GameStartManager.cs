@@ -106,6 +106,7 @@ public class GameStartManager : MonoBehaviour
             if (waveManager != null)
             {
                 waveManager.enabled = true;
+                waveManager.StartWaveSequence();
             }
         }
     }

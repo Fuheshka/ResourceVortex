@@ -85,7 +85,12 @@ public class WaveManager : MonoBehaviour
             spawners.AddRange(FindObjectsOfType<EnemySpawner>());
         }
 
-        // ��������� ������ �����
+        // Removed automatic start of waves on Start
+        // StartCoroutine(StartWaves());
+    }
+
+    public void StartWaveSequence()
+    {
         StartCoroutine(StartWaves());
     }
 
