@@ -23,6 +23,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] runClips; // New array for random run sounds
     public AudioClip shieldActivateClip;
 
+    [Header("Trash Bin Audio Clips")]
+    public AudioClip trashBinClearClip; // New clip for trash bin clear sound
+
     [Header("Enemy Audio Clips")]
     public AudioClip enemySpawnClip;
     public AudioClip[] enemyDeathClips;
@@ -191,6 +194,23 @@ public void PlaySFX(AudioClip clip)
             }
             recycleSfxSource.clip = clip;
             recycleSfxSource.Play();
+        }
+    }
+
+    public void PlayTrashBinClearSFX()
+    {
+        if (trashBinClearClip != null && recycleSfxSource != null)
+        {
+            if (recycleSfxSource.isPlaying)
+            {
+                recycleSfxSource.Stop();
+            }
+            recycleSfxSource.clip = trashBinClearClip;
+            recycleSfxSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning("AudioManager: PlayTrashBinClearSFX called but trashBinClearClip or recycleSfxSource is null.");
         }
     }
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TrashBin : MonoBehaviour
 {
@@ -10,7 +11,14 @@ public class TrashBin : MonoBehaviour
     public int maxHealth = 100;
     private int currentHealth;
 
+    [Header("Trash Bin Settings")]
+    public int maxTrashCapacity = 10; // Maximum trash the bin can hold
+    private int currentTrashAmount = 0;
+
     private Collider binCollider;
+
+    public Slider healthBarSlider;
+    public Slider trashFillSlider; // Slider to show trash fill level
 
     void Awake()
     {
@@ -26,22 +34,33 @@ public class TrashBin : MonoBehaviour
         }
 
         currentHealth = maxHealth;
+        currentTrashAmount = 0;
+        UpdateTrashFillUI();
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(compressedTrashTag))
         {
-            // Award points
-            if (ScoreManager.Instance != null)
+            if (currentTrashAmount < maxTrashCapacity)
             {
-                ScoreManager.Instance.AddScore(pointsPerTrash);
+                currentTrashAmount++;
+                Debug.Log("Trash deposited. Current trash amount: " + currentTrashAmount);
+                UpdateTrashFillUI();
+
+                // Award points
+                if (ScoreManager.Instance != null)
+                {
+                    ScoreManager.Instance.AddScore(pointsPerTrash);
+                }
+
+                // Destroy the compressed trash projectile
+                Destroy(other.gameObject);
             }
-
-            // Destroy the compressed trash projectile
-            Destroy(other.gameObject);
-
-            Debug.Log("Compressed trash deposited. Points awarded: " + pointsPerTrash);
+            else
+            {
+                Debug.Log("Trash bin is full. Cannot deposit more trash.");
+            }
         }
     }
 
@@ -50,16 +69,24 @@ public class TrashBin : MonoBehaviour
     {
         if (collision.gameObject.CompareTag(compressedTrashTag))
         {
-            if (ScoreManager.Instance != null)
+            if (currentTrashAmount < maxTrashCapacity)
             {
-                ScoreManager.Instance.AddScore(pointsPerTrash);
+                currentTrashAmount++;
+                Debug.Log("Trash deposited via collision. Current trash amount: " + currentTrashAmount);
+                UpdateTrashFillUI();
+
+                if (ScoreManager.Instance != null)
+                {
+                    ScoreManager.Instance.AddScore(pointsPerTrash);
+                }
+                Destroy(collision.gameObject);
             }
-            Destroy(collision.gameObject);
-            Debug.Log("Compressed trash deposited via collision. Points awarded: " + pointsPerTrash);
+            else
+            {
+                Debug.Log("Trash bin is full. Cannot deposit more trash.");
+            }
         }
     }
-
-    public UnityEngine.UI.Slider healthBarSlider;
 
     public void TakeDamage(int damage)
     {
@@ -74,6 +101,27 @@ public class TrashBin : MonoBehaviour
         if (currentHealth <= 0)
         {
             Die();
+        }
+    }
+
+public void ClearTrash()
+{
+    Debug.Log("ClearTrash() called on TrashBin.");
+    Debug.Log("Trash bin cleared. Trash amount reset from " + currentTrashAmount + " to 0.");
+    currentTrashAmount = 0;
+    UpdateTrashFillUI();
+
+    if (AudioManager.Instance != null)
+    {
+        AudioManager.Instance.PlayTrashBinClearSFX();
+    }
+}
+
+    void UpdateTrashFillUI()
+    {
+        if (trashFillSlider != null)
+        {
+            trashFillSlider.value = (float)currentTrashAmount / maxTrashCapacity;
         }
     }
 

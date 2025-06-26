@@ -73,10 +73,6 @@ public class GameStartManager : MonoBehaviour
                     isLookingAtSign = true;
                 }
             }
-            else
-            {
-                Debug.Log("Raycast did not hit any object.");
-            }
         }
 
         // Allow advancing text only if player is looking at the sign and presses E
