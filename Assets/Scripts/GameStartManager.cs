@@ -2,12 +2,6 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 
-using UnityEngine;
-using TMPro;
-
-using TMPro;
-using UnityEngine;
-
 public class GameStartManager : MonoBehaviour
 {
     public TextMeshProUGUI signText; // Reference to the TextMeshProUGUI component on the sign UI
@@ -80,14 +74,24 @@ public class GameStartManager : MonoBehaviour
             endGamePanel.SetActive(false);
         }
 
-        // Ensure Easter panels are disabled at start
-        if (easterPanel1 != null)
+        // Easter panels are not disabled at start to keep them always available
+        // if (easterPanel1 != null)
+        // {
+        //     easterPanel1.SetActive(false);
+        // }
+        // if (easterPanel2 != null)
+        // {
+        //     easterPanel2.SetActive(false);
+        // }
+
+        // Set Easter panel texts immediately to ensure they display
+        if (easterPanel1 != null && easterPanel1Text != null)
         {
-            easterPanel1.SetActive(false);
+            easterPanel1Text.text = easterPanel1Texts[0];
         }
-        if (easterPanel2 != null)
+        if (easterPanel2 != null && easterPanel2Text != null)
         {
-            easterPanel2.SetActive(false);
+            easterPanel2Text.text = easterPanel2Texts[0];
         }
 
         // Position the sign near the trash bin
@@ -135,10 +139,11 @@ public class GameStartManager : MonoBehaviour
             return;
         }
 
-        if (isEasterRewardGiven)
-        {
-            return; // No further input after reward given
-        }
+        // Remove check to allow reward always available
+        // if (isEasterRewardGiven)
+        // {
+        //     return; // No further input after reward given
+        // }
 
         // Check if player is looking at the sign panel
         bool isLookingAtSign = false;
@@ -239,11 +244,11 @@ public class GameStartManager : MonoBehaviour
             portal.SetActive(false);
         }
 
-        // Show EasterPanel2 with message
-        if (easterPanel1 != null)
-        {
-            easterPanel1.SetActive(false);
-        }
+        // Easter panels remain active to keep them always available
+        // if (easterPanel1 != null)
+        // {
+        //     easterPanel1.SetActive(false);
+        // }
         if (easterPanel2 != null && easterPanel2Text != null)
         {
             easterPanel2.SetActive(true);
@@ -288,16 +293,21 @@ public class GameStartManager : MonoBehaviour
         if (firstPersonController != null)
         {
             firstPersonController.jumpPower *= 3f;
-            firstPersonController.walkSpeed *= 2f;
-            firstPersonController.sprintSpeed *= 2f;
+            firstPersonController.walkSpeed *= 3f;
+            firstPersonController.sprintSpeed *= 3f;
+        }
+
+        if (easterPanel2Text != null)
+        {
+            easterPanel2Text.text = "Speed x3, Jump x3";
         }
 
         isEasterRewardGiven = true;
 
-        // Hide EasterPanel2 after reward
-        if (easterPanel2 != null)
-        {
-            easterPanel2.SetActive(false);
-        }
+        // Do not disable EasterPanel2 to keep it always available
+        // if (easterPanel2 != null)
+        // {
+        //     easterPanel2.SetActive(false);
+        // }
     }
 }
