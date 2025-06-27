@@ -507,8 +507,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 244308329175804838}
   serializedVersion: 4
-  m_Mass: 10
-  m_Drag: 1
+  m_Mass: 20
+  m_Drag: 3
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -538,7 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eacc197f03d448b46abda01f94b8e7d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 30
+  maxHealth: 40
   healthBarSlider: {fileID: 6147375183320649248}
   attackRange: 2
   attackCooldown: 2
