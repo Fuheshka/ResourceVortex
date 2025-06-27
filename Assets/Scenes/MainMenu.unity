@@ -252,6 +252,7 @@ GameObject:
   - component: {fileID: 234892627}
   - component: {fileID: 234892626}
   - component: {fileID: 234892629}
+  - component: {fileID: 234892630}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -377,6 +378,50 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &234892630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234892625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 0}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &563116879
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,6 +621,7 @@ GameObject:
   - component: {fileID: 963217089}
   - component: {fileID: 963217088}
   - component: {fileID: 963217087}
+  - component: {fileID: 963217090}
   m_Layer: 5
   m_Name: Start
   m_TagString: Untagged
@@ -601,7 +647,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 493, y: -104}
-  m_SizeDelta: {x: 302.6145, y: 104.252}
+  m_SizeDelta: {x: 168.5, y: 83.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &963217087
 MonoBehaviour:
@@ -697,6 +743,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963217085}
   m_CullTransparentMesh: 1
+--- !u!114 &963217090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963217085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 753bf77d91c35784986fd4a4da9fee1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightColor: {r: 1, g: 0.49019608, b: 0.015686274, a: 1}
+  normalTextColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightTextColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1072609675
 GameObject:
   m_ObjectHideFlags: 0
@@ -847,6 +909,7 @@ GameObject:
   - component: {fileID: 1101888662}
   - component: {fileID: 1101888661}
   - component: {fileID: 1101888660}
+  - component: {fileID: 1101888663}
   m_Layer: 5
   m_Name: Quit
   m_TagString: Untagged
@@ -872,7 +935,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 493, y: -348.08002}
-  m_SizeDelta: {x: 302.6145, y: 104.252}
+  m_SizeDelta: {x: 137, y: 92.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1101888660
 MonoBehaviour:
@@ -968,6 +1031,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1101888658}
   m_CullTransparentMesh: 1
+--- !u!114 &1101888663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101888658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 753bf77d91c35784986fd4a4da9fee1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightColor: {r: 1, g: 0.49073613, b: 0.015686274, a: 1}
+  normalTextColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightTextColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1123535779
 GameObject:
   m_ObjectHideFlags: 0
