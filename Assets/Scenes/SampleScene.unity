@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &17476156
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6531,7 +6531,7 @@ MonoBehaviour:
   - {fileID: 6081335912669057808, guid: 5a7c82a04dcccb94899a1a9df294700c, type: 3}
   spawnInterval: 0.3
   spawnRadius: 10
-  spawnHeight: 20
+  spawnHeight: 0
   spawnCount: 1
 --- !u!4 &958630333
 Transform:
