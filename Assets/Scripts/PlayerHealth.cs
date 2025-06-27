@@ -7,8 +7,8 @@ public class PlayerHealth : MonoBehaviour
     [Header("Health Settings")]
     public int maxHealth = 100;
     private int currentHealth;
-    public Slider healthBarSlider; // ������ �� ������� HP
-    public float invincibilityTime = 1f; // ����� ������������ ����� �����
+    public Slider healthBarSlider; // Slider for HP display
+    public float invincibilityTime = 1f; // Invincibility duration after hit
     private bool isInvincible = false;
 
     [Header("Death Screen")]
@@ -18,7 +18,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
 
-        // ��������� Slider, ���� �� ��������
+        // Find Slider if not assigned
         if (healthBarSlider == null)
         {
             healthBarSlider = GameObject.Find("PlayerHealthBar").GetComponent<Slider>();
@@ -31,8 +31,8 @@ public class PlayerHealth : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && !isInvincible)
         {
-            TakeDamage(10); // ���� �� �����
-            StartCoroutine(InvincibilityFrame()); // ���������� ������������
+            TakeDamage(10); // Damage on hit
+            StartCoroutine(InvincibilityFrame()); // Start invincibility
         }
     }
 
@@ -45,6 +45,17 @@ public class PlayerHealth : MonoBehaviour
         {
             Die();
         }
+    }
+
+    public void RestoreHealth(int amount)
+    {
+        currentHealth += amount;
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        UpdateHealthBar();
+        Debug.Log("Player health restored by " + amount + ". Current health: " + currentHealth);
     }
 
     void UpdateHealthBar()
@@ -65,7 +76,6 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Player died!");
-        // Removed call to PlayCalmMusicOnDeath since it no longer exists
         if (deathScreenManager != null)
         {
             deathScreenManager.ShowDeathScreen();

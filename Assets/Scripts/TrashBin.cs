@@ -110,6 +110,21 @@ public class TrashBin : MonoBehaviour
         }
     }
 
+    public void RestoreHealth(int amount)
+    {
+        currentHealth += amount;
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        if (healthBarSlider != null)
+        {
+            healthBarSlider.value = (float)currentHealth / maxHealth;
+        }
+        UpdateHealthUI();
+        Debug.Log("TrashBin health restored by " + amount + ". Current health: " + currentHealth);
+    }
+
 public void ClearTrash()
 {
     Debug.Log("ClearTrash() called on TrashBin.");

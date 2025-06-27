@@ -24,6 +24,8 @@ public class UpgradeSystem : MonoBehaviour
         ThrowPower,
         TrashBinCapacity,
         TrashBinHealth,
+        PlayerHealthRestore,  // New upgrade type for player health restoration
+        TrashBinHealthRestore, // New upgrade type for trash bin health restoration
         Damage,
         CompressionSpeed,
         CollectionRadius,
@@ -47,6 +49,8 @@ public class UpgradeSystem : MonoBehaviour
         upgradeValues[UpgradeType.ThrowPower] = new float[] { 2f, 4f, 6f, 8f, 10f };
         upgradeValues[UpgradeType.TrashBinCapacity] = new float[] { 5f, 10f, 15f, 20f, 25f };
         upgradeValues[UpgradeType.TrashBinHealth] = new float[] { 20f, 40f, 60f, 80f, 100f };
+        upgradeValues[UpgradeType.PlayerHealthRestore] = new float[] { 10f, 20f, 30f, 40f, 50f }; // example restore amounts
+        upgradeValues[UpgradeType.TrashBinHealthRestore] = new float[] { 10f, 20f, 30f, 40f, 50f }; // example restore amounts
         upgradeValues[UpgradeType.Damage] = new float[] { 5f, 10f, 15f, 20f, 25f };
         upgradeValues[UpgradeType.CompressionSpeed] = new float[] { 0.4f, 0.3f, 0.2f, 0.1f, 0.05f }; // lower is faster
         upgradeValues[UpgradeType.CollectionRadius] = new float[] { 4f, 5f, 6f, 7f, 8f };
@@ -58,6 +62,8 @@ public class UpgradeSystem : MonoBehaviour
         upgradeCosts[UpgradeType.ThrowPower] = new int[] { 10, 20, 30, 40, 50 };
         upgradeCosts[UpgradeType.TrashBinCapacity] = new int[] { 15, 30, 45, 60, 75 };
         upgradeCosts[UpgradeType.TrashBinHealth] = new int[] { 15, 30, 45, 60, 75 };
+        upgradeCosts[UpgradeType.PlayerHealthRestore] = new int[] { 20, 40, 60, 80, 100 };
+        upgradeCosts[UpgradeType.TrashBinHealthRestore] = new int[] { 20, 40, 60, 80, 100 };
         upgradeCosts[UpgradeType.Damage] = new int[] { 20, 40, 60, 80, 100 };
         upgradeCosts[UpgradeType.CompressionSpeed] = new int[] { 10, 20, 30, 40, 50 };
         upgradeCosts[UpgradeType.CollectionRadius] = new int[] { 10, 20, 30, 40, 50 };
@@ -152,6 +158,21 @@ public class UpgradeSystem : MonoBehaviour
                 {
                     trashBin.maxHealth = 100 + (int)value; // base 100 + upgrade
                     trashBin.TakeDamage(0); // update UI
+                }
+                break;
+
+            case UpgradeType.PlayerHealthRestore:
+                if (playerThrow != null && playerThrow.GetComponent<PlayerHealth>() != null)
+                {
+                    PlayerHealth playerHealth = playerThrow.GetComponent<PlayerHealth>();
+                    playerHealth.RestoreHealth((int)value);
+                }
+                break;
+
+            case UpgradeType.TrashBinHealthRestore:
+                if (trashBin != null)
+                {
+                    trashBin.RestoreHealth((int)value);
                 }
                 break;
 

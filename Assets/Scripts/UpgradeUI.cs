@@ -30,6 +30,16 @@ public class UpgradeUI : MonoBehaviour
     public TextMeshProUGUI damageCostText;
     public Button damageUpgradeButton;
 
+    [Header("Player Health Restore")]
+    public TextMeshProUGUI playerHealthRestoreLevelText;
+    public TextMeshProUGUI playerHealthRestoreCostText;
+    public Button playerHealthRestoreUpgradeButton;
+
+    [Header("Trash Bin Health Restore")]
+    public TextMeshProUGUI trashBinHealthRestoreLevelText;
+    public TextMeshProUGUI trashBinHealthRestoreCostText;
+    public Button trashBinHealthRestoreUpgradeButton;
+
     [Header("Compression Speed")]
     public TextMeshProUGUI compressionSpeedLevelText;
     public TextMeshProUGUI compressionSpeedCostText;
@@ -76,6 +86,8 @@ public class UpgradeUI : MonoBehaviour
             { throwPowerUpgradeButton, UpgradeSystem.UpgradeType.ThrowPower },
             { trashBinCapacityUpgradeButton, UpgradeSystem.UpgradeType.TrashBinCapacity },
             { trashBinHealthUpgradeButton, UpgradeSystem.UpgradeType.TrashBinHealth },
+            { playerHealthRestoreUpgradeButton, UpgradeSystem.UpgradeType.PlayerHealthRestore },
+            { trashBinHealthRestoreUpgradeButton, UpgradeSystem.UpgradeType.TrashBinHealthRestore },
             { damageUpgradeButton, UpgradeSystem.UpgradeType.Damage },
             { compressionSpeedUpgradeButton, UpgradeSystem.UpgradeType.CompressionSpeed },
             { collectionRadiusUpgradeButton, UpgradeSystem.UpgradeType.CollectionRadius },
@@ -185,6 +197,8 @@ public class UpgradeUI : MonoBehaviour
         UpdateUpgradeUI(UpgradeSystem.UpgradeType.ThrowPower, throwPowerLevelText, throwPowerCostText, throwPowerUpgradeButton);
         UpdateUpgradeUI(UpgradeSystem.UpgradeType.TrashBinCapacity, trashBinCapacityLevelText, trashBinCapacityCostText, trashBinCapacityUpgradeButton);
         UpdateUpgradeUI(UpgradeSystem.UpgradeType.TrashBinHealth, trashBinHealthLevelText, trashBinHealthCostText, trashBinHealthUpgradeButton);
+        UpdateUpgradeUI(UpgradeSystem.UpgradeType.PlayerHealthRestore, playerHealthRestoreLevelText, playerHealthRestoreCostText, playerHealthRestoreUpgradeButton);
+        UpdateUpgradeUI(UpgradeSystem.UpgradeType.TrashBinHealthRestore, trashBinHealthRestoreLevelText, trashBinHealthRestoreCostText, trashBinHealthRestoreUpgradeButton);
         UpdateUpgradeUI(UpgradeSystem.UpgradeType.Damage, damageLevelText, damageCostText, damageUpgradeButton);
         UpdateUpgradeUI(UpgradeSystem.UpgradeType.CompressionSpeed, compressionSpeedLevelText, compressionSpeedCostText, compressionSpeedUpgradeButton);
         UpdateUpgradeUI(UpgradeSystem.UpgradeType.CollectionRadius, collectionRadiusLevelText, collectionRadiusCostText, collectionRadiusUpgradeButton);
