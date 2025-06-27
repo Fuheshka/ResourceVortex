@@ -24,9 +24,12 @@ public class PlayerThrow : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Time.timeScale > 0)
         {
-            ThrowTrash();
+            if (Input.GetButtonDown("Fire1") && !Input.GetKey(KeyCode.LeftControl))
+            {
+                ThrowTrash();
+            }
         }
     }
 
