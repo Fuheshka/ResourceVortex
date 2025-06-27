@@ -10,6 +10,8 @@ public class UpgradeSystem : MonoBehaviour
     public TrashSpawner trashSpawner;
     public EnemyAI enemyAI;
 
+    public GameObject portalChildObject; // Reference to the portal child object (trash spawner portal)
+
     public AudioClip upgradePurchaseClip;
 
     public Dictionary<UpgradeType, int> currentUpgradeLevels = new Dictionary<UpgradeType, int>();
@@ -22,6 +24,11 @@ public class UpgradeSystem : MonoBehaviour
     // Base costs for health restore upgrades
     private int basePlayerHealthRestoreCost = 20;
     private int baseTrashBinHealthRestoreCost = 20;
+
+    private float baseCollectionRadius; // Base collection radius to calculate decrease
+    private Vector3 basePortalScale; // Base scale of the portal child object
+
+    private float basePortalSpawnRadius; // Base spawn radius of trashSpawner
 
     public enum UpgradeType
     {
@@ -76,6 +83,34 @@ public class UpgradeSystem : MonoBehaviour
         upgradeCosts[UpgradeType.PortalSpawnRate] = new int[] { 25, 50, 75, 100, 125 };
         upgradeCosts[UpgradeType.PortalSpawnRadius] = new int[] { 20, 40, 60, 80, 100 };
         upgradeCosts[UpgradeType.PortalSpawnCount] = new int[] { 30, 60, 90, 120, 150 };
+
+        // Store base values for collection radius, portal scale, and portal spawn radius
+        if (trashCollection != null)
+        {
+            baseCollectionRadius = trashCollection.collectionRadius;
+        }
+        else
+        {
+            baseCollectionRadius = 5f; // default fallback
+        }
+
+        if (portalChildObject != null)
+        {
+            basePortalScale = portalChildObject.transform.localScale;
+        }
+        else
+        {
+            basePortalScale = Vector3.one; // default fallback
+        }
+
+        if (trashSpawner != null)
+        {
+            basePortalSpawnRadius = trashSpawner.spawnRadius;
+        }
+        else
+        {
+            basePortalSpawnRadius = 10f; // default fallback
+        }
 
         // Apply initial upgrades (level 0 means base values)
         ApplyAllUpgrades();
@@ -230,7 +265,17 @@ public class UpgradeSystem : MonoBehaviour
             case UpgradeType.CollectionRadius:
                 if (trashCollection != null)
                 {
-                    trashCollection.collectionRadius = value;
+                    // Decrease collection radius by a fixed amount per level
+                    float decreaseAmount = 0.5f * level; // example decrease per level
+                    trashCollection.collectionRadius = Mathf.Max(0f, baseCollectionRadius - decreaseAmount);
+
+                    // Decrease scale of portal child object proportionally
+                    if (portalChildObject != null)
+                    {
+                        float scaleDecreaseFactor = 0.1f * level; // example scale decrease per level
+                        Vector3 newScale = basePortalScale * Mathf.Max(0f, 1f - scaleDecreaseFactor);
+                        portalChildObject.transform.localScale = newScale;
+                    }
                 }
                 break;
 
@@ -244,7 +289,20 @@ public class UpgradeSystem : MonoBehaviour
             case UpgradeType.PortalSpawnRadius:
                 if (trashSpawner != null)
                 {
-                    trashSpawner.spawnRadius = value;
+                    // Decrease spawn radius by 0.5 per upgrade level
+                    float decreaseAmount = 0.5f * level;
+                    trashSpawner.spawnRadius = Mathf.Max(0f, basePortalSpawnRadius - decreaseAmount);
+
+                    // Decrease scale of portal child object by 0.5 per upgrade level on all axes
+                    if (portalChildObject != null)
+                    {
+                        float scaleDecreaseAmount = 0.5f * level;
+                        Vector3 newScale = basePortalScale - new Vector3(scaleDecreaseAmount, scaleDecreaseAmount, scaleDecreaseAmount);
+                        newScale.x = Mathf.Max(0f, newScale.x);
+                        newScale.y = Mathf.Max(0f, newScale.y);
+                        newScale.z = Mathf.Max(0f, newScale.z);
+                        portalChildObject.transform.localScale = newScale;
+                    }
                 }
                 break;
 
