@@ -214,7 +214,23 @@ public class UpgradeUI : MonoBehaviour
         int level = upgradeSystem.currentUpgradeLevels[type];
         levelText.text = $"Level: {level}";
 
-        if (level >= upgradeSystem.maxUpgradeLevel)
+        // For health restore upgrades, do not disable button or show MAX
+        if ((type == UpgradeSystem.UpgradeType.PlayerHealthRestore || type == UpgradeSystem.UpgradeType.TrashBinHealthRestore))
+        {
+            int cost = 0;
+            if (type == UpgradeSystem.UpgradeType.PlayerHealthRestore)
+            {
+                cost = 20 * (level + 1);
+            }
+            else if (type == UpgradeSystem.UpgradeType.TrashBinHealthRestore)
+            {
+                cost = 20 * (level + 1);
+            }
+            costText.text = $"Cost: {cost}";
+            upgradeButton.interactable = upgradeSystem.CanUpgrade(type);
+            SetButtonColor(upgradeButton, normalColor);
+        }
+        else if (level >= upgradeSystem.maxUpgradeLevel)
         {
             costText.text = "MAX";
             upgradeButton.interactable = false;

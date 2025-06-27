@@ -10,14 +10,18 @@ public class UpgradeSystem : MonoBehaviour
     public TrashSpawner trashSpawner;
     public EnemyAI enemyAI;
 
-    public int maxUpgradeLevel = 5;
-
     public AudioClip upgradePurchaseClip;
 
     public Dictionary<UpgradeType, int> currentUpgradeLevels = new Dictionary<UpgradeType, int>();
 
     public int upgradeCurrency = 0;
     public float scoreToCurrencyRate = 0.1f; // Example: 10 score = 1 currency
+
+    public int maxUpgradeLevel = 5;
+
+    // Base costs for health restore upgrades
+    private int basePlayerHealthRestoreCost = 20;
+    private int baseTrashBinHealthRestoreCost = 20;
 
     public enum UpgradeType
     {
@@ -49,8 +53,9 @@ public class UpgradeSystem : MonoBehaviour
         upgradeValues[UpgradeType.ThrowPower] = new float[] { 2f, 4f, 6f, 8f, 10f };
         upgradeValues[UpgradeType.TrashBinCapacity] = new float[] { 5f, 10f, 15f, 20f, 25f };
         upgradeValues[UpgradeType.TrashBinHealth] = new float[] { 20f, 40f, 60f, 80f, 100f };
-        upgradeValues[UpgradeType.PlayerHealthRestore] = new float[] { 10f, 20f, 30f, 40f, 50f }; // example restore amounts
-        upgradeValues[UpgradeType.TrashBinHealthRestore] = new float[] { 10f, 20f, 30f, 40f, 50f }; // example restore amounts
+        // Remove upgrade values for health restore upgrades as they are fixed
+        // upgradeValues[UpgradeType.PlayerHealthRestore] = new float[] { 10f, 20f, 30f, 40f, 50f };
+        // upgradeValues[UpgradeType.TrashBinHealthRestore] = new float[] { 10f, 20f, 30f, 40f, 50f };
         upgradeValues[UpgradeType.Damage] = new float[] { 5f, 10f, 15f, 20f, 25f };
         upgradeValues[UpgradeType.CompressionSpeed] = new float[] { 0.4f, 0.3f, 0.2f, 0.1f, 0.05f }; // lower is faster
         upgradeValues[UpgradeType.CollectionRadius] = new float[] { 4f, 5f, 6f, 7f, 8f };
@@ -62,8 +67,9 @@ public class UpgradeSystem : MonoBehaviour
         upgradeCosts[UpgradeType.ThrowPower] = new int[] { 10, 20, 30, 40, 50 };
         upgradeCosts[UpgradeType.TrashBinCapacity] = new int[] { 15, 30, 45, 60, 75 };
         upgradeCosts[UpgradeType.TrashBinHealth] = new int[] { 15, 30, 45, 60, 75 };
-        upgradeCosts[UpgradeType.PlayerHealthRestore] = new int[] { 20, 40, 60, 80, 100 };
-        upgradeCosts[UpgradeType.TrashBinHealthRestore] = new int[] { 20, 40, 60, 80, 100 };
+        // For health restore upgrades, start with base cost and increase with level (handled in CanUpgrade and Upgrade)
+        upgradeCosts[UpgradeType.PlayerHealthRestore] = new int[] { 20 }; 
+        upgradeCosts[UpgradeType.TrashBinHealthRestore] = new int[] { 20 };
         upgradeCosts[UpgradeType.Damage] = new int[] { 20, 40, 60, 80, 100 };
         upgradeCosts[UpgradeType.CompressionSpeed] = new int[] { 10, 20, 30, 40, 50 };
         upgradeCosts[UpgradeType.CollectionRadius] = new int[] { 10, 20, 30, 40, 50 };
@@ -93,10 +99,23 @@ public class UpgradeSystem : MonoBehaviour
     public bool CanUpgrade(UpgradeType type)
     {
         int currentLevel = currentUpgradeLevels[type];
-        if (currentLevel >= maxUpgradeLevel)
+        // Remove max level limit for health restore upgrades
+        if ((type != UpgradeType.PlayerHealthRestore && type != UpgradeType.TrashBinHealthRestore) && currentLevel >= maxUpgradeLevel)
             return false;
 
-        int cost = upgradeCosts[type][currentLevel];
+        int cost;
+        if (type == UpgradeType.PlayerHealthRestore)
+        {
+            cost = basePlayerHealthRestoreCost * (currentLevel + 1);
+        }
+        else if (type == UpgradeType.TrashBinHealthRestore)
+        {
+            cost = baseTrashBinHealthRestoreCost * (currentLevel + 1);
+        }
+        else
+        {
+            cost = upgradeCosts[type][currentLevel];
+        }
         return upgradeCurrency >= cost;
     }
 
@@ -109,7 +128,19 @@ public class UpgradeSystem : MonoBehaviour
         }
 
         int currentLevel = currentUpgradeLevels[type];
-        int cost = upgradeCosts[type][currentLevel];
+        int cost;
+        if (type == UpgradeType.PlayerHealthRestore)
+        {
+            cost = basePlayerHealthRestoreCost * (currentLevel + 1);
+        }
+        else if (type == UpgradeType.TrashBinHealthRestore)
+        {
+            cost = baseTrashBinHealthRestoreCost * (currentLevel + 1);
+        }
+        else
+        {
+            cost = upgradeCosts[type][currentLevel];
+        }
 
         // Deduct currency
         upgradeCurrency -= cost;
@@ -135,7 +166,11 @@ public class UpgradeSystem : MonoBehaviour
         int level = currentUpgradeLevels[type];
         if (level == 0) return; // no upgrade applied
 
-        float value = upgradeValues[type][level - 1];
+        float value = 0f;
+        if (type != UpgradeType.PlayerHealthRestore && type != UpgradeType.TrashBinHealthRestore)
+        {
+            value = upgradeValues[type][level - 1];
+        }
 
         switch (type)
         {
@@ -165,14 +200,16 @@ public class UpgradeSystem : MonoBehaviour
                 if (playerThrow != null && playerThrow.GetComponent<PlayerHealth>() != null)
                 {
                     PlayerHealth playerHealth = playerThrow.GetComponent<PlayerHealth>();
-                    playerHealth.RestoreHealth((int)value);
+                    int restoreAmount = (int)(playerHealth.maxHealth * 0.3f);
+                    playerHealth.RestoreHealth(restoreAmount);
                 }
                 break;
 
             case UpgradeType.TrashBinHealthRestore:
                 if (trashBin != null)
                 {
-                    trashBin.RestoreHealth((int)value);
+                    int restoreAmount = (int)(trashBin.maxHealth * 0.3f);
+                    trashBin.RestoreHealth(restoreAmount);
                 }
                 break;
 
@@ -212,9 +249,12 @@ public class UpgradeSystem : MonoBehaviour
                 break;
 
             case UpgradeType.PortalSpawnCount:
-                // For spawn count, we need to extend TrashSpawner to support multiple spawns per interval
-                // This will be handled separately
-                break;
+            // For spawn count, we need to extend TrashSpawner to support multiple spawns per interval
+            if (trashSpawner != null)
+            {
+                trashSpawner.spawnCount = (int)value;
+            }
+            break;
         }
     }
 
