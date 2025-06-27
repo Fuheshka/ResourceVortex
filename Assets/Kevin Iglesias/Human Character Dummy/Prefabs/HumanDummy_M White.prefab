@@ -526,8 +526,9 @@ MonoBehaviour:
   healthBarSlider: {fileID: 6199482201343208305}
   attackRange: 2
   attackCooldown: 2
-  attackDamage: 10
-  scoreValue: 10
+  attackDamage: 5
+  scoreValue: 30
+  attackTargetType: 0
 --- !u!195 &-1834000624686816765
 NavMeshAgent:
   m_ObjectHideFlags: 0

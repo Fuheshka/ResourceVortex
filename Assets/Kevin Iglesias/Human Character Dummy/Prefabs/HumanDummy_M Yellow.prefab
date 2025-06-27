@@ -446,6 +446,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HumanDummy_M Yellow
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d9cd8eb4a074cd84ab2686c58bcf21d9, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: d9cd8eb4a074cd84ab2686c58bcf21d9, type: 3}
       propertyPath: m_Controller
       value: 
@@ -555,8 +559,8 @@ MonoBehaviour:
   healthBarSlider: {fileID: 306045627793816939}
   attackRange: 2
   attackCooldown: 2
-  attackDamage: 15
-  scoreValue: 20
+  attackDamage: 10
+  scoreValue: 50
   attackTargetType: 1
 --- !u!195 &8668944578568181070
 NavMeshAgent:
