@@ -73,7 +73,7 @@ public class PlayerHealth : MonoBehaviour
         isInvincible = false;
     }
 
-    void Die()
+    public void Die()
     {
         Debug.Log("Player died!");
         if (deathScreenManager != null)
