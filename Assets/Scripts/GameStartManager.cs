@@ -5,6 +5,9 @@ using TMPro;
 using UnityEngine;
 using TMPro;
 
+using TMPro;
+using UnityEngine;
+
 public class GameStartManager : MonoBehaviour
 {
     public TextMeshProUGUI signText; // Reference to the TextMeshProUGUI component on the sign UI
@@ -45,12 +48,46 @@ public class GameStartManager : MonoBehaviour
     private int endGameTextIndex = 0;
     private bool isEndGameActive = false;
 
+    // New fields for Easter panels
+    public GameObject easterPanel1;
+    public TextMeshProUGUI easterPanel1Text;
+    public GameObject easterPanel2;
+    public TextMeshProUGUI easterPanel2Text;
+
+    private string[] easterPanel1Texts = new string[]
+    {
+        "Congratulations, you found the easter egg. Reach the top and get the ability."
+    };
+
+    private string[] easterPanel2Texts = new string[]
+    {
+        "Well done, you made it. Press E and get the reward."
+    };
+
+    private bool isEasterRewardGiven = false;
+
+    public Camera playerCamera; // Reference to the player's camera
+    public float maxLookDistance = 3f; // Max distance to detect looking at the sign
+    public LayerMask signLayerMask; // Layer mask for the sign UI collider
+
+    public FirstPersonController firstPersonController; // Reference to player controller
+
     void Start()
     {
         // Ensure end game panel is disabled at start
         if (endGamePanel != null)
         {
             endGamePanel.SetActive(false);
+        }
+
+        // Ensure Easter panels are disabled at start
+        if (easterPanel1 != null)
+        {
+            easterPanel1.SetActive(false);
+        }
+        if (easterPanel2 != null)
+        {
+            easterPanel2.SetActive(false);
         }
 
         // Position the sign near the trash bin
@@ -86,10 +123,6 @@ public class GameStartManager : MonoBehaviour
         }
     }
 
-    public Camera playerCamera; // Reference to the player's camera
-    public float maxLookDistance = 3f; // Max distance to detect looking at the sign
-    public LayerMask signLayerMask; // Layer mask for the sign UI collider
-
     void Update()
     {
         if (isEndGameActive)
@@ -100,6 +133,11 @@ public class GameStartManager : MonoBehaviour
                 AdvanceEndGameText();
             }
             return;
+        }
+
+        if (isEasterRewardGiven)
+        {
+            return; // No further input after reward given
         }
 
         // Check if player is looking at the sign panel
@@ -121,6 +159,26 @@ public class GameStartManager : MonoBehaviour
         if (isLookingAtSign && Input.GetKeyDown(KeyCode.E))
         {
             AdvanceIntroText();
+        }
+
+        // Check if player is looking at EasterPanel2 and presses E to get reward
+        bool isLookingAtEasterPanel2 = false;
+        if (playerCamera != null && easterPanel2 != null)
+        {
+            Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, maxLookDistance, signLayerMask))
+            {
+                if (hit.collider.gameObject == easterPanel2 || hit.collider.transform.IsChildOf(easterPanel2.transform))
+                {
+                    isLookingAtEasterPanel2 = true;
+                }
+            }
+        }
+
+        if (isLookingAtEasterPanel2 && Input.GetKeyDown(KeyCode.E))
+        {
+            GiveEasterReward();
         }
     }
 
@@ -150,6 +208,13 @@ public class GameStartManager : MonoBehaviour
                 waveManager.enabled = true;
                 waveManager.StartWaveSequence();
             }
+
+            // Show EasterPanel1 with message
+            if (easterPanel1 != null && easterPanel1Text != null)
+            {
+                easterPanel1.SetActive(true);
+                easterPanel1Text.text = easterPanel1Texts[0];
+            }
         }
     }
 
@@ -172,6 +237,17 @@ public class GameStartManager : MonoBehaviour
         foreach (GameObject portal in trashPortals)
         {
             portal.SetActive(false);
+        }
+
+        // Show EasterPanel2 with message
+        if (easterPanel1 != null)
+        {
+            easterPanel1.SetActive(false);
+        }
+        if (easterPanel2 != null && easterPanel2Text != null)
+        {
+            easterPanel2.SetActive(true);
+            easterPanel2Text.text = easterPanel2Texts[0];
         }
 
         // Show end game panel and start end game text sequence
@@ -202,6 +278,26 @@ public class GameStartManager : MonoBehaviour
 
             // Restart the current scene
             UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        }
+    }
+
+    void GiveEasterReward()
+    {
+        if (isEasterRewardGiven) return;
+
+        if (firstPersonController != null)
+        {
+            firstPersonController.jumpPower *= 3f;
+            firstPersonController.walkSpeed *= 2f;
+            firstPersonController.sprintSpeed *= 2f;
+        }
+
+        isEasterRewardGiven = true;
+
+        // Hide EasterPanel2 after reward
+        if (easterPanel2 != null)
+        {
+            easterPanel2.SetActive(false);
         }
     }
 }
