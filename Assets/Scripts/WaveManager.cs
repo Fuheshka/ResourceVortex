@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 [System.Serializable]
 public class WaveData
@@ -32,6 +33,8 @@ public class Wave
 
 public class WaveManager : MonoBehaviour
 {
+    public event Action AllWavesCompleted;
+
     public List<Wave> waves; // List of waves
     public List<EnemySpawner> spawners; // Enemy spawners
     public TextMeshProUGUI waveText; // UI text for wave display
@@ -211,6 +214,7 @@ public class WaveManager : MonoBehaviour
                     {
                         waveText.text = "All Waves Completed!";
                     }
+                    AllWavesCompleted?.Invoke();
                     break;
                 }
             }

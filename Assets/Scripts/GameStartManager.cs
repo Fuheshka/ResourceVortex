@@ -2,6 +2,9 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 
+using UnityEngine;
+using TMPro;
+
 public class GameStartManager : MonoBehaviour
 {
     public TextMeshProUGUI signText; // Reference to the TextMeshProUGUI component on the sign UI
@@ -14,12 +17,12 @@ public class GameStartManager : MonoBehaviour
     {
         "Hello, we are glad you joined us at work. To advance the text, press E while looking at this panel.",
         "Yes, we understand the path is not easy, but the salary is worth it.",
-        "You need to collect trash from these portals (E), compress it (F), and throw it into the trash bin (LMB).",
-        "Sometimes it gets clogged and needs to be cleaned.",
-        "Also, Krogs live in these parts, they don't like it when trash is touched.",
+        "You need to collect trash from the portals above you (press E), compress it (press F), and throw it into the trash bin (press LMB).",
+        "Sometimes the bin gets clogged and needs cleaning.",
+        "Beware of the Krogs that inhabit this area; they don't like their trash disturbed.",
         "We don't know why, but we can't pollute the forest, right?",
-        "Fight them off with compressed trash (LMB), but don't forget to throw it away.",
-        "See you soon!"
+        "Fight them off with compressed trash (press LMB), but don't forget to throw it away.",
+        "Good luck, and stay safe!"
     };
 
     private int currentTextIndex = 0;
@@ -27,8 +30,29 @@ public class GameStartManager : MonoBehaviour
     public TrashSpawner trashSpawner;
     public WaveManager waveManager;
 
+    // New fields for end game panel
+    public GameObject endGamePanel;
+    public TextMeshProUGUI endGameText;
+    [System.NonSerialized]
+    private string[] endGameTexts = new string[]
+    {
+        "Well done, you have successfully defended the forest from trash and the invading Krogs.",
+        "Your efforts have kept the environment clean and safe for all its inhabitants.",
+        "The trash portals have been sealed, and peace has returned to the land. For today...",
+        "Thank you for your dedication and bravery.",
+        "Press E to restart your journey."
+    };
+    private int endGameTextIndex = 0;
+    private bool isEndGameActive = false;
+
     void Start()
     {
+        // Ensure end game panel is disabled at start
+        if (endGamePanel != null)
+        {
+            endGamePanel.SetActive(false);
+        }
+
         // Position the sign near the trash bin
         if (signUI != null && trashBinTransform != null)
         {
@@ -50,6 +74,15 @@ public class GameStartManager : MonoBehaviour
         if (waveManager != null)
         {
             waveManager.enabled = false;
+            waveManager.AllWavesCompleted += OnAllWavesCompleted;
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (waveManager != null)
+        {
+            waveManager.AllWavesCompleted -= OnAllWavesCompleted;
         }
     }
 
@@ -59,6 +92,16 @@ public class GameStartManager : MonoBehaviour
 
     void Update()
     {
+        if (isEndGameActive)
+        {
+            // Allow advancing end game text by pressing E
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                AdvanceEndGameText();
+            }
+            return;
+        }
+
         // Check if player is looking at the sign panel
         bool isLookingAtSign = false;
         if (playerCamera != null && signUI != null)
@@ -107,6 +150,58 @@ public class GameStartManager : MonoBehaviour
                 waveManager.enabled = true;
                 waveManager.StartWaveSequence();
             }
+        }
+    }
+
+    void OnAllWavesCompleted()
+    {
+        // Disable trash spawning
+        if (trashSpawner != null)
+        {
+            trashSpawner.enabled = false;
+        }
+
+        // Destroy or disable all portals with tags "enemyspawnportal" and "trashspawnportal"
+        GameObject[] enemyPortals = GameObject.FindGameObjectsWithTag("EnemySpawnPortal");
+        foreach (GameObject portal in enemyPortals)
+        {
+            portal.SetActive(false);
+        }
+
+        GameObject[] trashPortals = GameObject.FindGameObjectsWithTag("TrashSpawnPortal");
+        foreach (GameObject portal in trashPortals)
+        {
+            portal.SetActive(false);
+        }
+
+        // Show end game panel and start end game text sequence
+        if (endGamePanel != null && endGameText != null)
+        {
+            endGamePanel.SetActive(true);
+            endGameTextIndex = 0;
+            endGameText.text = endGameTexts[endGameTextIndex];
+            isEndGameActive = true;
+        }
+    }
+
+    void AdvanceEndGameText()
+    {
+        endGameTextIndex++;
+        if (endGameTextIndex < endGameTexts.Length)
+        {
+            endGameText.text = endGameTexts[endGameTextIndex];
+        }
+        else
+        {
+            // End game text finished, hide panel and restart level
+            if (endGamePanel != null)
+            {
+                endGamePanel.SetActive(false);
+            }
+            isEndGameActive = false;
+
+            // Restart the current scene
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
     }
 }
