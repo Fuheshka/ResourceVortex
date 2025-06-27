@@ -575,7 +575,7 @@ MonoBehaviour:
   healthBarSlider: {fileID: 1631676199507889705}
   attackRange: 2
   attackCooldown: 4
-  attackDamage: 25
+  attackDamage: 10
   scoreValue: 1000
   attackTargetType: 0
 --- !u!195 &4294841511803368255
