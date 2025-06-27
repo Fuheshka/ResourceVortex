@@ -186,9 +186,7 @@ public class UpgradeUI : MonoBehaviour
     {
         ColorBlock cb = btn.colors;
         cb.normalColor = color;
-        cb.highlightedColor = color;
-        cb.pressedColor = color;
-        cb.selectedColor = color;
+        // Keep other colors unchanged to preserve hover, pressed, selected states
         btn.colors = cb;
     }
 

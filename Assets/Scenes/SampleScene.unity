@@ -3085,9 +3085,9 @@ MonoBehaviour:
   portalSpawnCountCostText: {fileID: 1198657049}
   portalSpawnCountUpgradeButton: {fileID: 326993628}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
-  hoverColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  pressedColor: {r: 1, g: 0, b: 0, a: 1}
-  selectedColor: {r: 0, g: 1, b: 0, a: 1}
+  hoverColor: {r: 1, g: 0.968804, b: 0.6084906, a: 1}
+  pressedColor: {r: 1, g: 0.7216981, b: 0.7216981, a: 1}
+  selectedColor: {r: 1, g: 1, b: 1, a: 1}
   playerCamera: {fileID: 1308070830}
   maxRayDistance: 10
   buttonLayerMask:
@@ -3110,6 +3110,7 @@ MonoBehaviour:
   trashCollection: {fileID: 4459864850421215169}
   trashSpawner: {fileID: 958630332}
   enemyAI: {fileID: 0}
+  portalChildObject: {fileID: 1754241086}
   upgradePurchaseClip: {fileID: 8300000, guid: 0ae414ec2ca8a674ea2dd6008549922e, type: 3}
   upgradeCurrency: 0
   scoreToCurrencyRate: 0.1
@@ -3706,7 +3707,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 7f6a2e5c19092d541ada16b09ae605b7, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.38
   m_Pitch: 1
@@ -6346,7 +6347,7 @@ MonoBehaviour:
   dynamicMusic: {fileID: 8300000, guid: 89dd1735c3ce1d24b9e731e918bef694, type: 3}
   mainMenuMusic: {fileID: 8300000, guid: 6f130810c6472b44294577934d03aca4, type: 3}
   fadeDuration: 2.66
-  musicVolume: 0.087
+  musicVolume: 0.03
   gameSceneName: SampleScene
 --- !u!4 &890644970
 Transform:
@@ -6791,7 +6792,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 397.32, y: 34.18, z: 537.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1754241087}
   m_Father: {fileID: 0}
@@ -22251,7 +22252,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 2.0799866, y: 0.460001, z: -0.05999756}
   m_LocalScale: {x: 6.25, y: 6.25, z: 6.25}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 958630333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
