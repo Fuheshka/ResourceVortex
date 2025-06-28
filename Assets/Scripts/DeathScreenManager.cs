@@ -197,6 +197,10 @@ public class DeathScreenManager : MonoBehaviour
         {
             ResetDeathScreen();
         }
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.ResetScore();
+        }
         StartCoroutine(RestartSceneCoroutine());
     }
 
@@ -215,6 +219,11 @@ public class DeathScreenManager : MonoBehaviour
 
         // Ensure time scale is reset after scene load
         Time.timeScale = 1f;
+
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.RefreshScoreTextReference();
+        }
 
         // Find EnemySpawner and enable it explicitly
         EnemySpawner spawner = FindObjectOfType<EnemySpawner>();

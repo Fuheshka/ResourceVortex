@@ -6,7 +6,13 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager Instance;
 
     private int score = 0;
-    private TextMeshProUGUI scoreText; // ������ �� ��������� �������
+    public TextMeshProUGUI scoreText; // ������ �� ��������� �������
+
+    public void ResetScore()
+    {
+        score = 0;
+        UpdateScoreUI();
+    }
 
     void Awake()
     {
@@ -24,6 +30,12 @@ public class ScoreManager : MonoBehaviour
     void Start()
     {
         // ������� ��������� ������� ��� ������
+        scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
+        UpdateScoreUI();
+    }
+
+    public void RefreshScoreTextReference()
+    {
         scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         UpdateScoreUI();
     }
@@ -54,21 +66,25 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-/*    // ��� ������ ��� ������������ �����
+    // ��� ������ ��� ������������ �����
     void OnEnable()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
     {
         // ��� �������� ����� ����� ������� ��������� ������� �����
-        scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
-        UpdateScoreUI();
-    }*/
+        GameObject scoreTextObj = GameObject.Find("ScoreText");
+        if (scoreTextObj != null)
+        {
+            scoreText = scoreTextObj.GetComponent<TextMeshProUGUI>();
+            UpdateScoreUI();
+        }
+    }
 }

@@ -460,7 +460,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 4bb95055a3ed1c14a8f7f8ac59fe97e3, type: 2}
     - target: {fileID: 919132149155446097, guid: d9cd8eb4a074cd84ab2686c58bcf21d9, type: 3}
       propertyPath: m_Name
-      value: HumanDummy_M Green
+      value: LittleFastTrashBinDamager
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d9cd8eb4a074cd84ab2686c58bcf21d9, type: 3}
       propertyPath: m_TagString
@@ -518,7 +518,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3089543
+  m_Radius: 0.61
   m_Height: 1.9608841
   m_Direction: 1
   m_Center: {x: -0.012305498, y: 0.8587321, z: 0.07120216}

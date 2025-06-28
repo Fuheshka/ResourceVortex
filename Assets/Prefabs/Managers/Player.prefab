@@ -458,8 +458,6 @@ GameObject:
   - component: {fileID: 346746983906210629}
   - component: {fileID: 3089724292664384718}
   - component: {fileID: 4411156250639892229}
-  - component: {fileID: 3878089394223633945}
-  - component: {fileID: 5532420226405539368}
   - component: {fileID: 9192159918759757131}
   - component: {fileID: 10785298320615641}
   m_Layer: 0
@@ -679,39 +677,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerThrow: {fileID: 3089724292664384718}
-  throwForceUpgradeAmount: 2
+  trashBin: {fileID: 0}
+  trashCollection: {fileID: 0}
+  trashSpawner: {fileID: 0}
+  enemyAI: {fileID: 0}
+  portalChildObject: {fileID: 0}
+  upgradePurchaseClip: {fileID: 0}
+  upgradeCurrency: 0
+  scoreToCurrencyRate: 0.1
   maxUpgradeLevel: 5
---- !u!114 &3878089394223633945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4510979467835368652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e63819386b565341bdde8f695b39f12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shieldObject: {fileID: 0}
-  shieldDuration: 5
-  shieldCooldown: 10
---- !u!114 &5532420226405539368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4510979467835368652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 198a1f00d69d69a41a9215bc59157054, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  comboCount: 0
-  comboResetTime: 3
-  scoreMultiplier: 1
-  multiplierIncrement: 0.5
+  upgradeUI: {fileID: 0}
 --- !u!114 &9192159918759757131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -752,7 +727,15 @@ MonoBehaviour:
   collectPromptText: {fileID: 0}
   playerThrow: {fileID: 3089724292664384718}
   compressionDelay: 0.5
+  clearTrashRadius: 3
+  holdClearDuration: 2
+  clearPromptText: {fileID: 0}
+  clearProgressImage: {fileID: 0}
+  playerCamera: {fileID: 0}
   bulletCount: 0
+  trashBinLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &6545874865231545347
 GameObject:
   m_ObjectHideFlags: 0
