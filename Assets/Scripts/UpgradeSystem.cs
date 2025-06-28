@@ -30,6 +30,8 @@ public class UpgradeSystem : MonoBehaviour
 
     private float basePortalSpawnRadius; // Base spawn radius of trashSpawner
 
+    public UpgradeUI upgradeUI; // Reference to UpgradeUI to refresh UI after initialization
+
     public enum UpgradeType
     {
         ThrowPower,
@@ -114,6 +116,12 @@ public class UpgradeSystem : MonoBehaviour
 
         // Apply initial upgrades (level 0 means base values)
         ApplyAllUpgrades();
+
+        // Call UpgradeUI to refresh UI after initialization
+        if (upgradeUI != null)
+        {
+            upgradeUI.RefreshUI();
+        }
     }
 
     public void ConvertScoreToCurrency()
@@ -127,6 +135,10 @@ public class UpgradeSystem : MonoBehaviour
                 upgradeCurrency += currencyToAdd;
                 ScoreManager.Instance.AddScore(-score);
                 Debug.Log($"Converted {score} score to {currencyToAdd} upgrade currency.");
+                if (upgradeUI != null)
+                {
+                    upgradeUI.RefreshUI();
+                }
             }
         }
     }

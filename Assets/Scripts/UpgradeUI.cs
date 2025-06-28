@@ -95,7 +95,10 @@ public class UpgradeUI : MonoBehaviour
             { portalSpawnRadiusUpgradeButton, UpgradeSystem.UpgradeType.PortalSpawnRadius },
             { portalSpawnCountUpgradeButton, UpgradeSystem.UpgradeType.PortalSpawnCount }
         };
+    }
 
+    public void RefreshUI()
+    {
         UpdateUI();
     }
 
