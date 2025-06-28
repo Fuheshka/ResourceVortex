@@ -260,12 +260,20 @@ public class UpgradeSystem : MonoBehaviour
                 }
                 break;
 
-            case UpgradeType.Damage:
-                if (enemyAI != null)
-                {
-                    enemyAI.attackDamage = 10 + (int)value; // base 10 + upgrade
-                }
-                break;
+case UpgradeType.Damage:
+    if (playerThrow != null && playerThrow.trashPrefab != null)
+    {
+        TrashProjectile projectile = playerThrow.trashPrefab.GetComponent<TrashProjectile>();
+        if (projectile != null)
+        {
+            projectile.damage = level;
+            if (projectile.damage < 1)
+            {
+                projectile.damage = 1;
+            }
+        }
+    }
+    break;
 
             case UpgradeType.CompressionSpeed:
                 if (trashCollection != null)
@@ -274,22 +282,22 @@ public class UpgradeSystem : MonoBehaviour
                 }
                 break;
 
-            case UpgradeType.CollectionRadius:
-                if (trashCollection != null)
-                {
-                    // Decrease collection radius by a fixed amount per level
-                    float decreaseAmount = 0.5f * level; // example decrease per level
-                    trashCollection.collectionRadius = Mathf.Max(0f, baseCollectionRadius - decreaseAmount);
+case UpgradeType.CollectionRadius:
+    if (trashCollection != null)
+    {
+        // Increase collection radius by a fixed amount per level
+        float increaseAmount = 0.5f * level; // example increase per level
+        trashCollection.collectionRadius = baseCollectionRadius + increaseAmount;
 
-                    // Decrease scale of portal child object proportionally
-                    if (portalChildObject != null)
-                    {
-                        float scaleDecreaseFactor = 0.1f * level; // example scale decrease per level
-                        Vector3 newScale = basePortalScale * Mathf.Max(0f, 1f - scaleDecreaseFactor);
-                        portalChildObject.transform.localScale = newScale;
-                    }
-                }
-                break;
+        // Increase scale of portal child object proportionally
+        if (portalChildObject != null)
+        {
+            float scaleIncreaseFactor = 0.1f * level; // example scale increase per level
+            Vector3 newScale = basePortalScale * (1f + scaleIncreaseFactor);
+            portalChildObject.transform.localScale = newScale;
+        }
+    }
+    break;
 
             case UpgradeType.PortalSpawnRate:
                 if (trashSpawner != null)

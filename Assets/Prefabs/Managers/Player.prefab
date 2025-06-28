@@ -457,7 +457,6 @@ GameObject:
   - component: {fileID: 8760680810199242072}
   - component: {fileID: 346746983906210629}
   - component: {fileID: 3089724292664384718}
-  - component: {fileID: 4411156250639892229}
   - component: {fileID: 9192159918759757131}
   - component: {fileID: 10785298320615641}
   m_Layer: 0
@@ -664,29 +663,6 @@ MonoBehaviour:
   playerCamera: {fileID: 139953376528244222}
   maxThrowDistance: 50
   trashCollection: {fileID: 10785298320615641}
---- !u!114 &4411156250639892229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4510979467835368652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db91d334295497b4f80924ca8ffb677a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerThrow: {fileID: 3089724292664384718}
-  trashBin: {fileID: 0}
-  trashCollection: {fileID: 0}
-  trashSpawner: {fileID: 0}
-  enemyAI: {fileID: 0}
-  portalChildObject: {fileID: 0}
-  upgradePurchaseClip: {fileID: 0}
-  upgradeCurrency: 0
-  scoreToCurrencyRate: 0.1
-  maxUpgradeLevel: 5
-  upgradeUI: {fileID: 0}
 --- !u!114 &9192159918759757131
 MonoBehaviour:
   m_ObjectHideFlags: 0

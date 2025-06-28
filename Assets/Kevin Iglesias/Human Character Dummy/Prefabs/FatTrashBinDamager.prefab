@@ -538,7 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eacc197f03d448b46abda01f94b8e7d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 25
+  maxHealth: 40
   healthBarSlider: {fileID: 6147375183320649248}
   attackRange: 2
   attackCooldown: 2
