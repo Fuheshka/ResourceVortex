@@ -171,6 +171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1f050952eed855489ed4cb9cdbbedcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 4
+  damage: 3
   scorePerKill: 10
   destroyHeight: -10

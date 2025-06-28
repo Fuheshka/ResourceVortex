@@ -50,79 +50,89 @@ public class UpgradeSystem : MonoBehaviour
     private Dictionary<UpgradeType, float[]> upgradeValues = new Dictionary<UpgradeType, float[]>();
     public Dictionary<UpgradeType, int[]> upgradeCosts = new Dictionary<UpgradeType, int[]>();
 
-    void Start()
+void Start()
+{
+    // Initialize current levels
+    foreach (UpgradeType type in Enum.GetValues(typeof(UpgradeType)))
     {
-        // Initialize current levels
-        foreach (UpgradeType type in Enum.GetValues(typeof(UpgradeType)))
-        {
-            currentUpgradeLevels[type] = 0;
-        }
+        currentUpgradeLevels[type] = 0;
+    }
 
-        // Initialize upgrade values per level (example values, can be adjusted)
-        upgradeValues[UpgradeType.ThrowPower] = new float[] { 2f, 4f, 6f, 8f, 10f };
-        upgradeValues[UpgradeType.TrashBinCapacity] = new float[] { 5f, 10f, 15f, 20f, 25f };
-        upgradeValues[UpgradeType.TrashBinHealth] = new float[] { 20f, 40f, 60f, 80f, 100f };
-        // Remove upgrade values for health restore upgrades as they are fixed
-        // upgradeValues[UpgradeType.PlayerHealthRestore] = new float[] { 10f, 20f, 30f, 40f, 50f };
-        // upgradeValues[UpgradeType.TrashBinHealthRestore] = new float[] { 10f, 20f, 30f, 40f, 50f };
-        upgradeValues[UpgradeType.Damage] = new float[] { 5f, 10f, 15f, 20f, 25f };
-        upgradeValues[UpgradeType.CompressionSpeed] = new float[] { 0.4f, 0.3f, 0.2f, 0.1f, 0.05f }; // lower is faster
-        upgradeValues[UpgradeType.CollectionRadius] = new float[] { 4f, 5f, 6f, 7f, 8f };
-        upgradeValues[UpgradeType.PortalSpawnRate] = new float[] { 4f, 3f, 2f, 1f, 0.5f }; // lower is faster spawn
-        upgradeValues[UpgradeType.PortalSpawnRadius] = new float[] { 12f, 14f, 16f, 18f, 20f };
-        upgradeValues[UpgradeType.PortalSpawnCount] = new float[] { 1f, 2f, 3f, 4f, 5f };
+    // Initialize upgrade values per level (example values, can be adjusted)
+    upgradeValues[UpgradeType.ThrowPower] = new float[] { 2f, 4f, 6f, 8f, 10f };
+    upgradeValues[UpgradeType.TrashBinCapacity] = new float[] { 5f, 10f, 15f, 20f, 25f };
+    upgradeValues[UpgradeType.TrashBinHealth] = new float[] { 20f, 40f, 60f, 80f, 100f };
+    // Remove upgrade values for health restore upgrades as they are fixed
+    // upgradeValues[UpgradeType.PlayerHealthRestore] = new float[] { 10f, 20f, 30f, 40f, 50f };
+    // upgradeValues[UpgradeType.TrashBinHealthRestore] = new float[] { 10f, 20f, 30f, 40f, 50f };
+    upgradeValues[UpgradeType.Damage] = new float[] { 5f, 10f, 15f, 20f, 25f };
+    upgradeValues[UpgradeType.CompressionSpeed] = new float[] { 0.4f, 0.3f, 0.2f, 0.1f, 0.05f }; // lower is faster
+    upgradeValues[UpgradeType.CollectionRadius] = new float[] { 4f, 5f, 6f, 7f, 8f };
+    upgradeValues[UpgradeType.PortalSpawnRate] = new float[] { 4f, 3f, 2f, 1f, 0.5f }; // lower is faster spawn
+    upgradeValues[UpgradeType.PortalSpawnRadius] = new float[] { 12f, 14f, 16f, 18f, 20f };
+    upgradeValues[UpgradeType.PortalSpawnCount] = new float[] { 1f, 2f, 3f, 4f, 5f };
 
-        // Initialize upgrade costs per level (example values)
-        upgradeCosts[UpgradeType.ThrowPower] = new int[] { 10, 20, 30, 40, 50 };
-        upgradeCosts[UpgradeType.TrashBinCapacity] = new int[] { 15, 30, 45, 60, 75 };
-        upgradeCosts[UpgradeType.TrashBinHealth] = new int[] { 15, 30, 45, 60, 75 };
-        // For health restore upgrades, start with base cost and increase with level (handled in CanUpgrade and Upgrade)
-        upgradeCosts[UpgradeType.PlayerHealthRestore] = new int[] { 20 }; 
-        upgradeCosts[UpgradeType.TrashBinHealthRestore] = new int[] { 20 };
-        upgradeCosts[UpgradeType.Damage] = new int[] { 20, 40, 60, 80, 100 };
-        upgradeCosts[UpgradeType.CompressionSpeed] = new int[] { 10, 20, 30, 40, 50 };
-        upgradeCosts[UpgradeType.CollectionRadius] = new int[] { 10, 20, 30, 40, 50 };
-        upgradeCosts[UpgradeType.PortalSpawnRate] = new int[] { 25, 50, 75, 100, 125 };
-        upgradeCosts[UpgradeType.PortalSpawnRadius] = new int[] { 20, 40, 60, 80, 100 };
-        upgradeCosts[UpgradeType.PortalSpawnCount] = new int[] { 30, 60, 90, 120, 150 };
+    // Initialize upgrade costs per level (example values)
+    upgradeCosts[UpgradeType.ThrowPower] = new int[] { 10, 20, 30, 40, 50 };
+    upgradeCosts[UpgradeType.TrashBinCapacity] = new int[] { 15, 30, 45, 60, 75 };
+    upgradeCosts[UpgradeType.TrashBinHealth] = new int[] { 15, 30, 45, 60, 75 };
+    // For health restore upgrades, start with base cost and increase with level (handled in CanUpgrade and Upgrade)
+    upgradeCosts[UpgradeType.PlayerHealthRestore] = new int[] { 20 }; 
+    upgradeCosts[UpgradeType.TrashBinHealthRestore] = new int[] { 20 };
+    upgradeCosts[UpgradeType.Damage] = new int[] { 20, 40, 60, 80, 100 };
+    upgradeCosts[UpgradeType.CompressionSpeed] = new int[] { 10, 20, 30, 40, 50 };
+    upgradeCosts[UpgradeType.CollectionRadius] = new int[] { 10, 20, 30, 40, 50 };
+    upgradeCosts[UpgradeType.PortalSpawnRate] = new int[] { 25, 50, 75, 100, 125 };
+    upgradeCosts[UpgradeType.PortalSpawnRadius] = new int[] { 20, 40, 60, 80, 100 };
+    upgradeCosts[UpgradeType.PortalSpawnCount] = new int[] { 30, 60, 90, 120, 150 };
 
-        // Store base values for collection radius, portal scale, and portal spawn radius
-        if (trashCollection != null)
-        {
-            baseCollectionRadius = trashCollection.collectionRadius;
-        }
-        else
-        {
-            baseCollectionRadius = 5f; // default fallback
-        }
+    // Store base values for collection radius, portal scale, and portal spawn radius
+    if (trashCollection != null)
+    {
+        baseCollectionRadius = trashCollection.collectionRadius;
+    }
+    else
+    {
+        baseCollectionRadius = 5f; // default fallback
+    }
 
-        if (portalChildObject != null)
-        {
-            basePortalScale = portalChildObject.transform.localScale;
-        }
-        else
-        {
-            basePortalScale = Vector3.one; // default fallback
-        }
+    if (portalChildObject != null)
+    {
+        basePortalScale = portalChildObject.transform.localScale;
+    }
+    else
+    {
+        basePortalScale = Vector3.one; // default fallback
+    }
 
-        if (trashSpawner != null)
-        {
-            basePortalSpawnRadius = trashSpawner.spawnRadius;
-        }
-        else
-        {
-            basePortalSpawnRadius = 10f; // default fallback
-        }
+    if (trashSpawner != null)
+    {
+        basePortalSpawnRadius = trashSpawner.spawnRadius;
+    }
+    else
+    {
+        basePortalSpawnRadius = 10f; // default fallback
+    }
 
-        // Apply initial upgrades (level 0 means base values)
-        ApplyAllUpgrades();
-
-        // Call UpgradeUI to refresh UI after initialization
-        if (upgradeUI != null)
+    // Set initial damage on trashPrefab to 1 at game start
+    if (playerThrow != null && playerThrow.trashPrefab != null)
+    {
+        TrashProjectile projectile = playerThrow.trashPrefab.GetComponent<TrashProjectile>();
+        if (projectile != null)
         {
-            upgradeUI.RefreshUI();
+            projectile.damage = 1;
         }
     }
+
+    // Apply initial upgrades (level 0 means base values)
+    ApplyAllUpgrades();
+
+    // Call UpgradeUI to refresh UI after initialization
+    if (upgradeUI != null)
+    {
+        upgradeUI.RefreshUI();
+    }
+}
 
     public void ConvertScoreToCurrency()
     {
