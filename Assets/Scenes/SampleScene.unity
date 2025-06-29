@@ -3554,7 +3554,7 @@ MonoBehaviour:
   enemyAI: {fileID: 0}
   portalChildObject: {fileID: 1754241086}
   upgradePurchaseClip: {fileID: 8300000, guid: 0ae414ec2ca8a674ea2dd6008549922e, type: 3}
-  upgradeCurrency: 100
+  upgradeCurrency: 0
   scoreToCurrencyRate: 0.1
   maxUpgradeLevel: 5
   upgradeUI: {fileID: 457890448}
