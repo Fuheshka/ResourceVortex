@@ -1,8 +1,9 @@
 # ResourceVortex
 
-![Logo](![ResourceVortexCoverImage](https://github.com/user-attachments/assets/d840e38d-7f73-41af-b004-a8571bee8135))
+<img width="1024" height="1024" alt="ChatGPT Image 20 сент  2025 г , 00_34_36" src="https://github.com/user-attachments/assets/552c0305-b30b-474d-975e-953683892fad" />
 
-> **"Survive the trash vortex. Defend. Compress. Survive."**
+
+> **"Survive the trash vortex. Defend. Compress. Survive."** 
 
 ---
 
@@ -67,6 +68,17 @@
 - Оптимизация физики мусора  
 - Балансировка волн врагов  
 - Разработка интуитивного интерфейса  
+
+---
+
+## 📺 Скриншоты
+[СКАЧАТЬ БИЛД](https://fuheshka.itch.io/resource-vortex)
+
+<img width="1920" height="1080" alt="2025-06-29_17-19-09" src="https://github.com/user-attachments/assets/37aa13fe-9658-4c29-b67b-b27df49ee8ec" />
+<img width="1920" height="1080" alt="2025-06-29_17-27-28" src="https://github.com/user-attachments/assets/e8646b8f-9214-4a1a-8d9e-edcf02370458" />
+<img width="1920" height="1080" alt="2025-06-29_17-54-11" src="https://github.com/user-attachments/assets/a349aaef-fbab-4a28-8e3f-0e4b4e1ca814" />
+<img width="1920" height="1080" alt="2025-06-29_17-53-11" src="https://github.com/user-attachments/assets/8297ce2e-227d-4ae4-907b-c423a5e6c868" />
+<img width="1920" height="1080" alt="2025-06-29_17-33-46" src="https://github.com/user-attachments/assets/99786a0f-77b6-493b-9254-811b68cbb0a1" />
 
 ---
 
